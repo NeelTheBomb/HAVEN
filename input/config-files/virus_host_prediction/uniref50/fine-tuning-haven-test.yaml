@@ -55,13 +55,13 @@ fine_tune_settings:
     label_col: "virus_host_name"
     exclude_labels: [ "nan" ]
     label_groupings:
-      "Human": [ "Homo sapiens" ]
-      "Pig": [ "Sus scrofa" ]
-      "Capybara": [ "Hydrochoerus hydrochaeris" ]
-      "Coquerel's sifaka (Lemur)" : [ "Propithecus Coquereli" ]
-      "Himalayan marmot" : [ "Marmota Himalayana" ]
-      "Common Carp": [ "Cyprinus Carpio" ]
-      "Black-and-white ruffed Lemur": [ "Varecia Variegata" ]
+      "Human": [ "homo sapiens" ]
+      "Pig": [ "sus scrofa" ]
+      "Capybara": [ "hydrochoerus hydrochaeris" ]
+      "Coquerel's sifaka (Lemur)" : [ "propithecus coquereli" ]
+      "Himalayan marmot" : [ "marmota himalayana" ]
+      "Common Carp": [ "cyprinus carpio" ]
+      "Black-and-white ruffed Lemur": [ "varecia variegata" ]
 
   task_settings:
     - id: "host_prediction_sequence_msl2048cls_bn_fnn_2l_d1024_lr1e-4"
