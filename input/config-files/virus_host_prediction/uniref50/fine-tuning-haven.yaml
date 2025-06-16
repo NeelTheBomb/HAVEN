@@ -86,7 +86,7 @@ fine_tune_settings:
       stride: 64
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 5
+      n_classes: 7
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
@@ -102,7 +102,7 @@ fine_tune_settings:
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 5
+      n_classes: 7
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
