@@ -82,7 +82,7 @@ fine_tune_settings:
       active: False
       mode: "train" # supported values: train, test
       fine_tuned_model_path: ""
-      cls_token: False
+      cls_token: True
       stride: 64
       loss: "FocalLoss"
       n_mlp_layers: 2
@@ -101,6 +101,7 @@ fine_tune_settings:
       cls_token: False
       n_heads: 8
       loss: "FocalLoss"
+      alpha: [1, 1, 1, 1, 1, 1, 1]
       n_mlp_layers: 2
       n_classes: 5
       input_dim: 512 # input embedding dimension
