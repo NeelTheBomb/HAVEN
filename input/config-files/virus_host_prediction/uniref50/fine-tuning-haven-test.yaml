@@ -101,7 +101,9 @@ fine_tune_settings:
       cls_token: False
       n_heads: 8
       loss: "FocalLoss"
+      # added the two lines below
       alpha: [1, 1, 1, 1, 1, 1, 1]
+      gamma: 2.0
       n_mlp_layers: 2
       n_classes: 5
       input_dim: 512 # input embedding dimension
