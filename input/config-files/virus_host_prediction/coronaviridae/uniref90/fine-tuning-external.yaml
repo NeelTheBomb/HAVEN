@@ -1,4 +1,4 @@
-config_type: "virus_host_prediction_external"
+config_type: "virus_host_prediction"
 
 # Input Settings:
   ## initialize base input folder name
@@ -20,12 +20,23 @@ sequence_settings:
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
-    max_sequence_length: 2582 #changed this from 2048 to 2582
+    #max_sequence_length: 2582 #changed this from 2048 to 2582
     split_sequence: False
     feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
 
+    pre_train_settings:
+    model_name: "masked_language_modeling"
+    model_path: "output/raw/uniref50-coronaviridae/pre-training/mlm/20250616/transformer_encoder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
+    encoder_settings:
+    model_name: "transformer_encoder-l_6-h_8-lr1e-4-mlm"
+    n_heads: 8
+    depth: 6
+    input_dim: 512 # input embedding dimension
+    hidden_dim: 1024
+    max_seq_len: 256
+
 fine_tune_settings:
-  experiment: "virus_host_prediction_external"
+  experiment: "virus_host_prediction"
   n_iterations: 5
   split_input: True
   train_proportion: 0.8
@@ -33,7 +44,8 @@ fine_tune_settings:
   save_model: True
 
   training_settings:
-    n_epochs: 50
+    n_epochs_freeze: 20
+    n_epochs_unfreeze: 30
     max_lr: 3e-4
     pct_start: 0.10
     div_factor: 25.0
@@ -51,57 +63,19 @@ fine_tune_settings:
       "European rabbit": [ 9986 ]
 
   task_settings:
-    - id: "prostt5_fnn_2l_d1024_lr3e-4"
-      name: "ProstT5"
-      active: False
-      mode: "train" # supported values: train, test
-      fine_tuned_model_path: ""
-      pre_trained_model_link: "Rostlab/ProstT5"
-      hugging_face_cache_dir: "output/cache_dir"
-      loss: "FocalLoss"
-      n_mlp_layers: 2
-      n_classes: 6
-      input_dim: 1024 # input embedding dimension
-      hidden_dim: 1024
-      data_parallel: False
-
-    - id: "prot_t5_xl_uniref50_fnn_2l_d1024_lr3e-4"
-      name: "ProtT5"
+    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4"
+      name: "HAVEN"
       active: True
       mode: "train" # supported values: train, test
       fine_tuned_model_path: ""
-      pre_trained_model_link: "Rostlab/prot_t5_xl_uniref50"
-      hugging_face_cache_dir: "output/cache_dir"
+      segment_len: 256
+      stride: 64
+      cls_token: True
+      n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
       n_classes: 6
       input_dim: 1024 # input embedding dimension
-      hidden_dim: 1024
-      data_parallel: False
-
-    - id: "esm2_t12_35M_UR50D_bn_fnn_2l_d1024_lr1e-4"
-      name: "ESM2"
-      active: False
-      mode: "train" # supported values: train, test
-      fine_tuned_model_path: ""
-      fine_tuned_model_name: "esm2_t12_35M_UR50D" # "esm2_t36_3B_UR50D" # "esm2_t48_15B_UR50D" # "esm2_t33_650M_UR50D"
-      repr_layer: 12 # 36 # 48 # 33
-      input_dim: 480 # 2560 # 5120 # 1280 # input embedding dimension
-      loss: "FocalLoss"
-      n_mlp_layers: 2
-      n_classes: 6
-      hidden_dim: 1024
-      data_parallel: False
-
-    - id: "esm3_bn_fnn_2l_d1024_lr1e-4"
-      name: "ESM3"
-      active: False
-      mode: "train" # supported values: train, test
-      fine_tuned_model_name: "esm3-open"
-      input_dim: 1536
-      loss: "FocalLoss"
-      n_mlp_layers: 2
-      n_classes: 6
       hidden_dim: 1024
       data_parallel: False
 
@@ -109,4 +83,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix: "uniref50coronaviridae" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
