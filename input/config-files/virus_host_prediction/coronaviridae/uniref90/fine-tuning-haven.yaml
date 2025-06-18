@@ -20,7 +20,6 @@ sequence_settings:
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
-    #max_sequence_length: 2582 #changed this from 2048 to 2582
     split_sequence: False
     feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
 
