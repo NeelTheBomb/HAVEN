@@ -5,22 +5,22 @@ config_type: "virus_host_prediction_external"
   ## provide path to dataset folder
 input_settings:
   # Base input directory
-  input_dir: "input/data/coronaviridae/20240313/uniref"
+  input_dir: "input/data/coronaviridae/20250616"
 
   # Name of file(s) in subdirectory to be read and processed.
   # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
   # file_names: [ "uniref90_final_msl1114.csv" ]
-  file_names: [ "coronaviridae_s_uniref90_embl_hosts_pruned_metadata_corrected_species_virus_host_vertebrates_w_seq_t0.01_c8.csv" ]
+  file_names: [ "final_filtered_df.csv" ]
   # seeds to split the files into training and testing
   # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 8
-    id_col: "uniref90_id"
+    batch_size: 16 #changed this to 16
+    id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
-    max_sequence_length: 2048
+    max_sequence_length: 2582 #changed this from 2048 to 2582
     split_sequence: False
     feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
 
@@ -40,17 +40,15 @@ fine_tune_settings:
     final_div_factor: 10000.0
 
   label_settings:
-    label_col: "virus_host_name"
+    label_col: "virus_host_tax_id"
     exclude_labels: [ "nan" ]
     label_groupings:
-      "Chicken": [ "gallus gallus" ]
-      "Human": [ "homo sapiens" ]
-      "Cat": [ "felis catus" ]
-      "Pig": [ "sus scrofa" ]
-      "Gray wolf": [ "canis lupus" ]
-      "Horshoe bat": [ "rhinolophus sp." ]
-      "Ferret": [ "mustela putorius" ]
-      "Chinese rufous horseshoe bat": [ "rhinolophus sinicus" ]
+      "Human": [ 9606 ]
+      "Chicken": [ 9031 ]
+      "Cat": [ 9685 ]
+      "Pig": [ 9823 ]
+      "Gray wolf": [ 9612 ]
+      "European rabbit": [ 9986 ]
 
   task_settings:
     - id: "prostt5_fnn_2l_d1024_lr3e-4"
@@ -62,7 +60,7 @@ fine_tune_settings:
       hugging_face_cache_dir: "output/cache_dir"
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 8
+      n_classes: 6
       input_dim: 1024 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
@@ -76,7 +74,7 @@ fine_tune_settings:
       hugging_face_cache_dir: "output/cache_dir"
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 8
+      n_classes: 6
       input_dim: 1024 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
@@ -91,7 +89,7 @@ fine_tune_settings:
       input_dim: 480 # 2560 # 5120 # 1280 # input embedding dimension
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 8
+      n_classes: 6
       hidden_dim: 1024
       data_parallel: False
 
@@ -103,12 +101,12 @@ fine_tune_settings:
       input_dim: 1536
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 8
+      n_classes: 6
       hidden_dim: 1024
       data_parallel: False
 
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "coronaviridae_s_prot_uniref90_embl_vertebrates_t0.01_c8/20250131/host_multi/external"
-  prefix: "uniref90coronaviridae" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
+  prefix: "uniref50coronaviridae" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
