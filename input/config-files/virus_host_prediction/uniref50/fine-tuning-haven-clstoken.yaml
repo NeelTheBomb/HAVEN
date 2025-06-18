@@ -16,7 +16,8 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 8
+    # change batch size to 8 if no space error 
+    batch_size: 16
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
@@ -25,7 +26,7 @@ sequence_settings:
 
 pre_train_settings:
   model_name: "masked_language_modeling"
-  model_path: "output/raw/uniref50-viridae/pre-training/mlm/20250602/transformer_encoder-l_6-h_8-lr1e-4_msl256_b1024_splitseq_mlm_vs30_itr0_noclstoken.pth"
+  model_path: "output/raw/uniref50-viridae/pre-training/mlm/20250602/transformer_encoder-l_6-h_8-lr1e-4_msl256_b1024_splitseq_mlm_vs30_itr0.pth"
   # model_path: "output/raw/uniref90-viridae/pre-training/mlm/20241010/checkpoints/transformer_encoder-l_6-h_8-lr1e-4_msl2048_b128_nosplitseq_mlm_vs30_cls_allemb_itr0_checkpt11.pth"
   encoder_settings:
     model_name: "transformer_encoder-l_6-h_8-lr1e-4-mlm"
@@ -98,7 +99,7 @@ fine_tune_settings:
       fine_tuned_model_path: ""
       segment_len: 256
       stride: 64
-      cls_token: False
+      cls_token: True
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
@@ -111,4 +112,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

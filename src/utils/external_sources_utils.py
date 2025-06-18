@@ -5,7 +5,7 @@
 import random
 
 import requests
-#import pytaxonkit
+import pytaxonkit
 import pandas as pd
 import os
 from Bio import SeqIO
