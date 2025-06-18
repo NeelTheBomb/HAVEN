@@ -16,6 +16,7 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
+    # change batch size to 8 if no space error 
     batch_size: 16
     id_col: "uniref50_id"
     sequence_col: "seq"
@@ -44,8 +45,8 @@ fine_tune_settings:
   save_model: True
 
   training_settings:
-    n_epochs_freeze: 2
-    n_epochs_unfreeze: 3
+    n_epochs_freeze: 20
+    n_epochs_unfreeze: 30
     max_lr: 3e-4
     pct_start: 0.10
     div_factor: 25.0
@@ -55,13 +56,13 @@ fine_tune_settings:
     label_col: "virus_host_name"
     exclude_labels: [ "nan" ]
     label_groupings:
-      "Human": [ "Homo sapiens" ]
-      "Pig": [ "Sus scrofa" ]
-      "Capybara": [ "Hydrochoerus hydrochaeris" ]
-      "Coquerel's sifaka (Lemur)" : [ "Propithecus Coquereli" ]
-      "Himalayan marmot" : [ "Marmota Himalayana" ]
-      "Common Carp": [ "Cyprinus Carpio" ]
-      "Black-and-white ruffed Lemur": [ "Varecia Variegata" ]
+      "Human": [ "homo sapiens" ]
+      "Pig": [ "sus scrofa" ]
+      "Capybara": [ "hydrochoerus hydrochaeris" ]
+      "Coquerel's sifaka (Lemur)" : [ "propithecus coquereli" ]
+      "Himalayan marmot" : [ "marmota himalayana" ]
+      "Common Carp": [ "cyprinus carpio" ]
+      "Black-and-white ruffed Lemur": [ "varecia variegata" ]
 
   task_settings:
     - id: "host_prediction_sequence_msl2048cls_bn_fnn_2l_d1024_lr1e-4"
@@ -82,7 +83,7 @@ fine_tune_settings:
       active: False
       mode: "train" # supported values: train, test
       fine_tuned_model_path: ""
-      cls_token: False
+      cls_token: True
       stride: 64
       loss: "FocalLoss"
       n_mlp_layers: 2
@@ -98,11 +99,11 @@ fine_tune_settings:
       fine_tuned_model_path: ""
       segment_len: 256
       stride: 64
-      cls_token: False
+      cls_token: True
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 5
+      n_classes: 7
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
@@ -111,4 +112,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
