@@ -16,7 +16,7 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 8
+    batch_size: 16 # changed from initial 8 to 16 due to high validation loss 
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
@@ -25,7 +25,7 @@ sequence_settings:
 
 pre_train_settings:
   model_name: "masked_language_modeling"
-  model_path: "output/raw/uniref50-viridae/pre-training/mlm/20250602/transformer_encoder-l_6-h_8-lr1e-4_msl256_b1024_splitseq_mlm_vs30_itr0_noclstoken.pth"
+  model_path: "output/raw/uniref50-viridae/pre-training/mlm/20250602/transformer_encoder-l_6-h_8-lr1e-4_msl256_b1024_splitseq_mlm_vs30_itr0.pth"
   # model_path: "output/raw/uniref90-viridae/pre-training/mlm/20241010/checkpoints/transformer_encoder-l_6-h_8-lr1e-4_msl2048_b128_nosplitseq_mlm_vs30_cls_allemb_itr0_checkpt11.pth"
   encoder_settings:
     model_name: "transformer_encoder-l_6-h_8-lr1e-4-mlm"
@@ -98,7 +98,7 @@ fine_tune_settings:
       fine_tuned_model_path: ""
       segment_len: 256
       stride: 64
-      cls_token: False
+      cls_token: True
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
