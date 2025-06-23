@@ -2,7 +2,7 @@
 
 #SBATCH -J haven
 #SBATCH --account=seqevol
-#SBATCH --partition=la100_normal_q
+#SBATCH --partition=a100_normal_q
 
 #SBATCH --mem=450G
 #SBATCH --nodes=1
