@@ -28,6 +28,7 @@ conda info
 # Setup project and result directories
 PROJECT_DIR=$1
 LOGS_DIR=$PROJECT_DIR/output/logs
+mkdir -p $LOGS_DIR #i added this
 echo "Project directory: $PROJECT_DIR"
 
 # Execute python script
