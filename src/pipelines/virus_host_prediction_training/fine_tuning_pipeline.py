@@ -197,7 +197,7 @@ def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loade
             break
 
     # unfreeze the pretrained model_params for the next n_epochs_unfreeze
-    nn_utils.set_model_grad(model.pre_trained_model, grad_value=True)
+    nn_utils.set_model_grad(model.module.pre_trained_model, grad_value=True)
 
     # reset early stopper
     early_stopper.reset()
