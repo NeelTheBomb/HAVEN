@@ -82,7 +82,7 @@ fine_tune_settings:
       active: False
       mode: "train" # supported values: train, test
       fine_tuned_model_path: ""
-      cls_token: True
+      cls_token: True # 
       stride: 64
       loss: "FocalLoss"
       n_mlp_layers: 2
@@ -105,7 +105,7 @@ fine_tune_settings:
       n_classes: 7
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
-      data_parallel: False
+      data_parallel: True # allow for parallel GPUs to run
 
 output_settings:
   output_dir: "output"
