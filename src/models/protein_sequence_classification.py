@@ -85,12 +85,12 @@ class ProteinSequenceClassification(nn.Module):
 
         # input linear layer
         X = F.relu(self.linear_ip(X))
-        if self.batch_norm: # and batch_size > 1:  # batch_norm is applicable only when batch_size is > 1
+        if self.batch_norm and batch_size > 1:  # batch_norm is applicable only when batch_size is > 1
             X = self.batch_norm_ip(X)
         # hidden
         for i, linear_layer in enumerate(self.linear_hidden_n):
             X = F.relu(linear_layer(X))
-            if self.batch_norm: # and batch_size > 1:  # batch_norm is applicable only when batch_size is > 1
+            if self.batch_norm batch_size > 1:  # batch_norm is applicable only when batch_size is > 1
                 X = self.batch_norm_hidden_n[i](X)
 
         y = self.linear_op(X)
