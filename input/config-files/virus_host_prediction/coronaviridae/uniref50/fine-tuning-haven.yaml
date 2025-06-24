@@ -16,7 +16,7 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 16 #changed this to 16
+    batch_size: 32 #changed this to 16
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
