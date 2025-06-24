@@ -75,7 +75,7 @@ fine_tune_settings:
       loss: "FocalLoss"
       n_mlp_layers: 2
       n_classes: 6
-      input_dim: 1024 # input embedding dimension
+      input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
 
