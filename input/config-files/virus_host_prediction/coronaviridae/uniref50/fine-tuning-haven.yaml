@@ -77,10 +77,10 @@ fine_tune_settings:
       n_classes: 6
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
-      data_parallel: True
+      data_parallel: False
 
 output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  
