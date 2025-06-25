@@ -46,10 +46,10 @@ fine_tune_settings:
   training_settings:
     n_epochs_freeze: 20
     n_epochs_unfreeze: 30
-    max_lr: 3e-4
+    max_lr: 1e-4 #changing this to 3e-4 to see if any changes occur
     pct_start: 0.10
-    div_factor: 25.0
-    final_div_factor: 10000.0
+    div_factor: 25.0 #changing to 25 from 50.0
+    final_div_factor: 20000.0 #changing from 10000.0
 
   label_settings:
     label_col: "virus_host_tax_id"
