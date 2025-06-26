@@ -37,7 +37,7 @@ pre_train_settings:
 
 fine_tune_settings:
   experiment: "virus_host_prediction"
-  n_iterations: 5
+  n_iterations: 1 #changiing from 5 to 1
   split_input: True
   train_proportion: 0.8
   classification_type: "multi"
@@ -46,7 +46,7 @@ fine_tune_settings:
   training_settings:
     n_epochs_freeze: 20
     n_epochs_unfreeze: 30
-    max_lr: 1e-4 #changing this to 3e-4 to see if any changes occur
+    max_lr: 1e-5 #changing this to 3e-4 to see if any changes occur
     pct_start: 0.10
     div_factor: 25.0 #changing to 25 from 50.0
     final_div_factor: 20000.0 #changing from 10000.0
@@ -83,4 +83,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "mlm_tfenc_l6_h8_lr1e-5_uniref50viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
