@@ -1,0 +1,46 @@
+config_type: "evaluation" # options: data_preprocessor, prediction, evaluation
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "output/raw"
+
+  file_names:
+    # compare different output files 
+
+    # 1. No cls token, lr : 3e^-4, bs : 8, itr : 5
+    "uniref50_noclstoken_lr_3e-4_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence_noclstoken/mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+
+    # 2. cls token, lr : 3e^-4, bs : 8, itr : 5
+    "uniref50_clstoken_lr_3e-4_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence/mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+
+    # 3. cls token, lr : 1e^-5 (maximum lr), bs : 8, itr : 1
+    "uniref50_clstoken_lr_1e-5_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence/mlm_tfenc_l6_h8_lr1e-5_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5_output.csv"
+
+evaluation_settings:
+  type: "multi"
+  # metrics
+  auroc: False
+  auprc: True
+  f1: False
+  accuracy: False
+  prediction_distribution: False
+
+label_mappings:
+  "Human": [ "homo sapiens" ]
+  "Pig": [ "sus scrofa" ]
+  "Capybara": [ "hydrochoerus hydrochaeris" ]
+  "Coquerel's sifaka (Lemur)" : [ "propithecus coquereli" ]
+  "Himalayan marmot" : [ "marmota himalayana" ]
+  "Common Carp": [ "cyprinus carpio" ]
+  "Black-and-white ruffed Lemur": [ "varecia variegata" ]
+
+
+output_settings:
+  output_dir: "output"
+  evaluation_dir: "evaluation"
+  visualization_dir: "visualization"
+  dataset_dir: "uniref50/20250630/host_multi"
+  prefix: "uniref50_host_multi_all_models"# default: none; default file name = <input_file_name>_<output_prefix>_output.csv
