@@ -47,8 +47,15 @@ def read_inputs(input_settings, label_mappings=None):
         df = pd.read_csv(input_file_path, index_col=0)
         print(f"input file = {input_file_path} --> results size = {df.shape}")
         if label_mappings:
+            # df.rename(columns=label_mappings, inplace=True)
+            # df["y_true"] = df["y_true"].replace(label_mappings)
+            # Flatten label_mappings: invert {'Human': ['homo sapiens']} → {'homo sapiens': 'Human'}
+            flat_mapping = {item: k for k, v in label_mappings.items() for item in v}
+            # Rename column labels if needed (leave this line unchanged if your column names are fine)
             df.rename(columns=label_mappings, inplace=True)
-            df["y_true"] = df["y_true"].replace(label_mappings)
+            # Replace y_true values using flat mapping
+            df["y_true"] = df["y_true"].replace(flat_mapping)
+            
         df["experiment"] = key
         inputs.append(df)
     df = pd.concat(inputs)
