@@ -43,4 +43,4 @@ output_settings:
   evaluation_dir: "evaluation"
   visualization_dir: "visualization"
   dataset_dir: "uniref50/20250630/host_multi"
-  prefix: "host_multi_all_models"# default: none; default file name = <input_file_name>_<output_prefix>_output.csv
+  prefix: "uniref50_host_multi_all_models"# default: none; default file name = <input_file_name>_<output_prefix>_output.csv
