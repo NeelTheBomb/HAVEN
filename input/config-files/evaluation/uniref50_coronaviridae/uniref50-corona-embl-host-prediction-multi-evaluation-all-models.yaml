@@ -28,11 +28,11 @@ evaluation_settings:
 
 label_mappings:
   "Human": [ 9606 ]
-      "Chicken": [ 9031 ]
-      "Cat": [ 9685 ]
-      "Pig": [ 9823 ]
-      "Gray wolf": [ 9612 ]
-      "European rabbit": [ 9986 ]
+  "Chicken": [ 9031 ]
+  "Cat": [ 9685 ]
+  "Pig": [ 9823 ]
+  "Gray wolf": [ 9612 ]
+  "European rabbit": [ 9986 ]
 
 
 output_settings:
