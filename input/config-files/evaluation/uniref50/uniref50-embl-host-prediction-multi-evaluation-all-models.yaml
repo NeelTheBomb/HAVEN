@@ -29,13 +29,13 @@ evaluation_settings:
   prediction_distribution: False
 
 label_mappings:
-  "Human": [ "homo sapiens" ]
-  "Pig": [ "sus scrofa" ]
-  "Capybara": [ "hydrochoerus hydrochaeris" ]
-  "Coquerel's sifaka (Lemur)" : [ "propithecus coquereli" ]
-  "Himalayan marmot" : [ "marmota himalayana" ]
-  "Common Carp": [ "cyprinus carpio" ]
-  "Black-and-white ruffed Lemur": [ "varecia variegata" ]
+  "homo sapiens" : "Human"
+  "sus scrofa" : "Pig"
+  "hydrochoerus hydrochaeris" : "Capybara"
+  "propithecus coquereli" : "Coquerel's sifaka (Lemur)"
+  "marmota himalayan" : "Himalayan marmot"
+  "cyprinus carpio" : "Common Carp"
+  "varecia variegata" : "Black-and-white ruffed Lemur"
 
 
 output_settings:
