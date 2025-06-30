@@ -16,8 +16,8 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    # change batch size to 8 if no space error 
-    batch_size: 16
+    # changed batch size to 8 due to no space error 
+    batch_size: 8
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
@@ -38,7 +38,7 @@ pre_train_settings:
 
 fine_tune_settings:
   experiment: "virus_host_prediction"
-  n_iterations: 5
+  n_iterations: 1
   split_input: True
   train_proportion: 0.8
   classification_type: "multi"
@@ -47,7 +47,7 @@ fine_tune_settings:
   training_settings:
     n_epochs_freeze: 20
     n_epochs_unfreeze: 30
-    max_lr: 3e-4
+    max_lr: 1e-5
     pct_start: 0.10
     div_factor: 25.0
     final_div_factor: 10000.0
@@ -112,4 +112,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "mlm_tfenc_l6_h8_lr1e-5_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
