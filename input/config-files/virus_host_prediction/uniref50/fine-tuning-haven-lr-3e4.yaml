@@ -17,7 +17,7 @@ input_settings:
 
 sequence_settings:
     # changed batch size to 32 since using a dataset with smaller largest sequence 
-    batch_size: 32
+    batch_size: 16
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
@@ -112,4 +112,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50_vertebrates_non_idv_98_percent_seq_length/lr_3e-4"
-  prefix: "mlm_tfenc_l6_h8_lr3e-4_bs32_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "mlm_tfenc_l6_h8_lr3e-4_bs16_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
