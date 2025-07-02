@@ -17,7 +17,7 @@ input_settings:
 
 sequence_settings:
     # changed batch size to 32 since using a dataset with smaller largest sequence 
-    batch_size: 16
+    batch_size: 8
     id_col: "uniref50_id"
     sequence_col: "seq"
     truncate: False
