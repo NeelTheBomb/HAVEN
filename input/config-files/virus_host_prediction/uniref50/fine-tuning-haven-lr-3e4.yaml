@@ -112,4 +112,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_3e-4"
-  prefix: "mlm_tfenc_l6_h8_lr3e-4_bs16_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "mlm_tfenc_l6_h8_lr3e-4_bs8_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
