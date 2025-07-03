@@ -111,5 +111,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence"
-  prefix: "mlm_tfenc_l6_h8_lr1e-5_bs8_5itr_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref50-viridae/uniref50_vertebrates_non_idv_2_percent_prevalence/itr_1"
+  prefix: "mlm_tfenc_l6_h8_lr1e-5_bs8_1itr_uniref50viridae_vs30_clstoken" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
