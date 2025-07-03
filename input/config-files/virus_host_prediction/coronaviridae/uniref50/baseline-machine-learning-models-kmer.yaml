@@ -40,13 +40,13 @@ classification_settings:
       "European rabbit": [ 9986 ]
   models:
     - name: "lr"
-      active: False
+      active: True
       C: [0.01, 0.1, 1]
       multiclass_type: "multinomial"
       max_iter: 500
 
     - name: "rf"
-      active: True
+      active: False
       n_estimators: [10, 100, 1000]
       max_depth: [3, 5]
 
@@ -60,4 +60,4 @@ output_settings:
   results_dir: "raw"
   visualizations_dir: "visualization"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix:  "lr_run_one" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix:  "logistic_reg" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
