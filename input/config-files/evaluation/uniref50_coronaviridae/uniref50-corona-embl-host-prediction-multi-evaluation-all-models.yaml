@@ -11,7 +11,7 @@ input_settings:
    
     # "ESM2-t33_650M_UR50D": "uniref90_embl_vertebrates_non_idv/20241124/host_multi/external/uniref90viridae_esm2_msl2048_bn_fnn_2l_d1024_lr1e-4_output.csv"
     # "ESM2-t36_3B_UR50D" : "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20241127/host_multi/external/uniref90viridae_esm2_t36_3B_UR50D_bn_fnn_2l_d1024_lr1e-4_output.csv"
-    "HAVEN 1e-5": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_tfenc_l6_h8_lr1e-6_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5_final_output.csv"
+    "HAVEN 1e-5": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_1e-5_final.csv"
     "HAVEN 1e-5 epochs40": "uniref50_coronaviridae/uniref50_corona_top_hosts/epochs40_60_patience_30.csv"
     "HAVEN 1e-5 epochs20": "uniref50_coronaviridae/uniref50_corona_top_hosts/epoch2030_patience30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
     "Random Forest": "uniref50_coronaviridae/uniref50_corona_top_hosts/kmer_k3_virus_host_tax_id_multi_rf_output.csv"
