@@ -37,7 +37,6 @@ classification_settings:
       "Cat": [ 9685 ]
       "Pig": [ 9823 ]
       "Gray wolf": [ 9612 ]
-      "European rabbit": [ 9986 ]
   models:
     - name: "lr"
       active: False
@@ -60,4 +59,4 @@ output_settings:
   results_dir: "raw"
   visualizations_dir: "visualization"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix:  "svm" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix:  "svm_5hosts" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
