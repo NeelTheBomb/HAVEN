@@ -60,7 +60,7 @@ fine_tune_settings:
       "Cat": [ 9685 ]
       "Pig": [ 9823 ]
       "Gray wolf": [ 9612 ]
-      "European rabbit": [ 9986 ]
+      #"European rabbit": [ 9986 ]
 
   task_settings:
     - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4"
@@ -83,4 +83,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix: "epoch2030_patience30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "epoch2030_patience30_fivehosts" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
