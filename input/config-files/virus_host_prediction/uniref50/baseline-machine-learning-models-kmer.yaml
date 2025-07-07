@@ -39,13 +39,13 @@ classification_settings:
       "Red junglefowl": [ "Gallus gallus" ]
   models:
     - name: "lr"
-      active: True
+      active: False
       C: [0.01, 0.1, 1]
       multiclass_type: "multinomial"
       max_iter: 500
 
     - name: "rf"
-      active: False
+      active: True
       n_estimators: [10, 100, 1000]
       max_depth: [3, 5]
 
@@ -58,5 +58,5 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   visualizations_dir: "visualization"
-  sub_dir: "uniref50/lr_model"
+  sub_dir: "uniref50/rf_model"
   prefix: "rf_model_98percent_seq_length_5itr" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
