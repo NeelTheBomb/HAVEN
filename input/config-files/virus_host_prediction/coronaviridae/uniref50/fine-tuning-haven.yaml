@@ -44,8 +44,8 @@ fine_tune_settings:
   save_model: True
 
   training_settings:
-    n_epochs_freeze: 20 #changing from 20
-    n_epochs_unfreeze: 30 #changing from 30
+    n_epochs_freeze: 40 #changing from 20
+    n_epochs_unfreeze: 60 #changing from 30
     max_lr: 1e-5 #changing this to 3e-4 to see if any changes occur
     pct_start: 0.10
     div_factor: 50.0 #changing to 25 from 50.0
@@ -82,4 +82,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix: "epoch50_patience30_fivehosts" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "epoch100_patience30_fivehosts" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
