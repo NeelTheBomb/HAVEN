@@ -22,7 +22,7 @@ classification_settings:
   train_proportion: 0.8
   type: "multi"
   sequence_settings:
-    id_col: "uniref90_id"
+    id_col: "uniref50_id"
     sequence_col: "seq"
     feature_type: "kmer"  # supported values 'kmer' (additional parameter 'k' required) , 'pssm', 'token'
     kmer_settings:
@@ -59,4 +59,4 @@ output_settings:
   results_dir: "raw"
   visualizations_dir: "visualization"
   sub_dir: "uniref50/lr_model"
-  prefix: "lr_model_98percent_seq_length_5itr" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "rf_model_98percent_seq_length_5itr" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
