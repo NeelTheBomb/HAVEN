@@ -60,7 +60,6 @@ fine_tune_settings:
       "Cat": [ 9685 ]
       "Pig": [ 9823 ]
       "Gray wolf": [ 9612 ]
-      #"European rabbit": [ 9986 ]
 
   task_settings:
     - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4"
@@ -74,7 +73,7 @@ fine_tune_settings:
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 6
+      n_classes: 5
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: True
