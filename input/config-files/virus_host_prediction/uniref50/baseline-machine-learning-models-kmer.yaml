@@ -32,11 +32,14 @@ classification_settings:
     label_col: "virus_host_name"
     exclude_labels: [ "nan"]
     label_groupings:
-      "Human": [ "Homo sapiens" ]
-      "Pig": [ "Sus scrofa" ]
-      "Capybara": [ "Hydrochoerus hydrochaeris" ]
-      "Himalayan marmot": [ "Marmota himalayana" ]
-      "Red junglefowl": [ "Gallus gallus" ]
+      "Human": [ "homo sapiens" ]
+      "Pig": [ "sus scrofa" ]
+      "Capybara": [ "hydrochoerus hydrochaeris" ]
+      "Coquerel's sifaka (Lemur)" : [ "propithecus coquereli" ]
+      "Himalayan marmot" : [ "marmota himalayana" ]
+      "Common Carp": [ "cyprinus carpio" ]
+      "Black-and-white ruffed Lemur": [ "varecia variegata" ]
+      
   models:
     - name: "lr"
       active: False
