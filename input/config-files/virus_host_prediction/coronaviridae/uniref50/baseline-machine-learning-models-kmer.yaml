@@ -39,13 +39,13 @@ classification_settings:
       "Gray wolf": [ 9612 ]
   models:
     - name: "lr"
-      active: True
+      active: False
       C: [0.01, 0.1, 1]
       multiclass_type: "multinomial"
       max_iter: 500
 
     - name: "rf"
-      active: False
+      active: True
       n_estimators: [10, 100, 1000]
       max_depth: [3, 5]
 
@@ -59,4 +59,4 @@ output_settings:
   results_dir: "raw"
   visualizations_dir: "visualization"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix:  "lr_5hosts" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix:  "rf_5hosts" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
