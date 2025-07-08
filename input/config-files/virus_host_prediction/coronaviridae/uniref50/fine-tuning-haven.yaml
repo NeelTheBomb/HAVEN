@@ -58,6 +58,7 @@ fine_tune_settings:
       "Human": [ 9606 ]
       "Chicken": [ 9031 ]
       "Cat": [ 9685 ]
+      "Pig": [ 9823 ]
 
   task_settings:
     - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4"
@@ -71,7 +72,7 @@ fine_tune_settings:
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 3
+      n_classes: 4
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: True
@@ -80,4 +81,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments"
-  prefix: "3hosts_epoch50" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "4hosts_epoch50" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
