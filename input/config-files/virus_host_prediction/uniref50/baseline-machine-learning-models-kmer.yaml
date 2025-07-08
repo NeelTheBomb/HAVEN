@@ -22,7 +22,7 @@ classification_settings:
   train_proportion: 0.8
   type: "multi"
   sequence_settings:
-    id_col: "uniref90_id"
+    id_col: "uniref50_id"
     sequence_col: "seq"
     feature_type: "kmer"  # supported values 'kmer' (additional parameter 'k' required) , 'pssm', 'token'
     kmer_settings:
@@ -32,14 +32,17 @@ classification_settings:
     label_col: "virus_host_name"
     exclude_labels: [ "nan"]
     label_groupings:
-      "Human": [ "Homo sapiens" ]
-      "Pig": [ "Sus scrofa" ]
-      "Capybara": [ "Hydrochoerus hydrochaeris" ]
-      "Himalayan marmot": [ "Marmota himalayana" ]
-      "Red junglefowl": [ "Gallus gallus" ]
+      "Human": [ "homo sapiens" ]
+      "Pig": [ "sus scrofa" ]
+      "Capybara": [ "hydrochoerus hydrochaeris" ]
+      "Coquerel's sifaka (Lemur)" : [ "propithecus coquereli" ]
+      "Himalayan marmot" : [ "marmota himalayana" ]
+      "Common Carp": [ "cyprinus carpio" ]
+      "Black-and-white ruffed Lemur": [ "varecia variegata" ]
+
   models:
     - name: "lr"
-      active: True
+      active: False
       C: [0.01, 0.1, 1]
       multiclass_type: "multinomial"
       max_iter: 500
@@ -50,7 +53,7 @@ classification_settings:
       max_depth: [3, 5]
 
     - name: "svm"
-      active: False
+      active: True
       C: [ 0.01, 0.1, 1, 10]
       kernel: "rbf"
 
@@ -58,5 +61,5 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   visualizations_dir: "visualization"
-  sub_dir: "uniref50/lr_model"
-  prefix: "lr_model_98percent_seq_length_5itr" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref50/svm_model"
+  prefix: "svm_model_98percent_seq_length_5itr" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
