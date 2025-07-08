@@ -19,7 +19,7 @@ input_settings:
     # lr : 1e-4 
     "lr_1e-4_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-4/mlm_tfenc_l6_h8_lr1e-4_bs8_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
     "lr_1e-4_bs16" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-4/mlm_tfenc_l6_h8_lr1e-4_bs16_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-    "lr_1e-4_bs32" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-4/mlm_tfenc_l6_h8_lr1e-5_bs32_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    "lr_1e-4_bs32" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-4/mlm_tfenc_l6_h8_lr1e-4_bs32_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
 
     # lr : 3e-4 
     "lr_3e-4_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_3e-4/mlm_tfenc_l6_h8_lr3e-4_bs8_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
