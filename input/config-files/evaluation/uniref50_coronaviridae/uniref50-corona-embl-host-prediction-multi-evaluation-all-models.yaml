@@ -8,7 +8,10 @@ input_settings:
   input_dir: "output/raw"
 
   file_names:
-   
+    #"4hosts_epoch100": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/4hosts_epoch100_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    "3hosts_epoch100":  "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch100_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    "3hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    #4hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/4hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
     #"HAVEN 1e-5": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_1e-5_final.csv"
     #"HAVEN 1e-5 epochs40": "uniref50_coronaviridae/uniref50_corona_top_hosts/epochs40_60_patience_30.csv"
     #"HAVEN 1e-5 epochs20": "uniref50_coronaviridae/uniref50_corona_top_hosts/epoch2030_patience30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
@@ -24,11 +27,6 @@ input_settings:
     # "HAVEN 1e-5_diff_divs": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_tfenc_l6_h8_lr1e-5_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5_changeddivs_output.csv"
     # "HAVEN 1e-5_og_divs": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_tfenc_l6_h8_lr1e-5pt2_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5_ogdiv_output.csv"
     # "HAVEN 1e-5_changed_epochs": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_tfenc_l6_h8_lr1e-6_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5_changed_epochs_output.csv"
-    "4hosts_epoch100": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/4hosts_epoch100_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-    "3hosts_epoch100":  "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch100_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-    "3hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-    "4hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/4hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-    
     
 
 evaluation_settings:
