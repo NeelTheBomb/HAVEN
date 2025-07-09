@@ -25,9 +25,9 @@ input_settings:
     # "HAVEN 1e-5_og_divs": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_tfenc_l6_h8_lr1e-5pt2_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5_ogdiv_output.csv"
     # "HAVEN 1e-5_changed_epochs": "uniref50_coronaviridae/uniref50_corona_top_hosts/mlm_tfenc_l6_h8_lr1e-6_uniref50viridae_vs30_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5_changed_epochs_output.csv"
     "4hosts_epoch100": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/4hosts_epoch100_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-  "3hosts_epoch100":  "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch100_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-  "3hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
-  "4hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/4hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    "3hosts_epoch100":  "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch100_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    "3hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/3hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    "4hosts_epoch50": "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments/4hosts_epoch50_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
     
     
 
