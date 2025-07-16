@@ -84,5 +84,5 @@ def get_mlm_model(encoder_model, mlm_model):
 
     print(mlm_model)
     print("Number of parameters = ", sum(p.numel() for p in mlm_model.parameters() if p.requires_grad))
-    return nn.DataParallel(mlm_model.to(nn_utils.get_device()))
-    # return mlm_model.to(nn_utils.get_device())
+    # return nn.DataParallel(mlm_model.to(nn_utils.get_device()))
+    return mlm_model.to(nn_utils.get_device())

@@ -1,0 +1,59 @@
+config_type: "evaluation" # options: data_preprocessor, prediction, evaluation
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "output/raw"
+
+  file_names:
+    # compare different output files 
+
+    "LR" : "uniref50/lr_model/kmer_k3_virus_host_name_multi_lr_model_98percent_seq_length_5itr_lr_output.csv"
+    "RF" : "uniref50/rf_model/kmer_k3_virus_host_name_multi_rf_model_98percent_seq_length_5itr_rf_output.csv"
+    "SVM" : "uniref50/svm_model/kmer_k3_virus_host_name_multi_svm_model_98percent_seq_length_5itr_svm_output.csv"
+    "Haven" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-5/mlm_tfenc_l6_h8_lr1e-5_bs64_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+
+    # lr : 1e-5 
+    # "lr_1e-5_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-5/mlm_tfenc_l6_h8_lr1e-5_bs8_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    # "lr_1e-5_bs16" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-5/mlm_tfenc_l6_h8_lr1e-5_bs16_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    # "lr_1e-5_bs32" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-5/mlm_tfenc_l6_h8_lr1e-5_bs32_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    # "lr_1e-5_bs64" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-5/mlm_tfenc_l6_h8_lr1e-5_bs64_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+
+    # lr : 1e-4 
+    # "lr_1e-4_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-4/mlm_tfenc_l6_h8_lr1e-4_bs8_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    # "lr_1e-4_bs16" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-4/mlm_tfenc_l6_h8_lr1e-4_bs16_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    # "lr_1e-4_bs32" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_1e-4/mlm_tfenc_l6_h8_lr1e-4_bs32_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+
+    # lr : 3e-4 
+    # "lr_3e-4_bs8" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_3e-4/mlm_tfenc_l6_h8_lr3e-4_bs8_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    # "lr_3e-4_bs16" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_3e-4/mlm_tfenc_l6_h8_lr3e-4_bs16_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+    # "lr_3e-4_bs32" : "uniref50-viridae/uniref50_vertebrates_non_idv_98_percent_seq_length/lr_3e-4/mlm_tfenc_l6_h8_lr3e-4_bs32_uniref50viridae_vs30_clstoken_hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4_output.csv"
+
+
+evaluation_settings:
+  type: "multi"
+  # metrics
+  auroc: False
+  auprc: True
+  f1: False
+  accuracy: False
+  prediction_distribution: False
+
+label_mappings:
+  "homo sapiens" : "Human"
+  "sus scrofa" : "Pig"
+  "hydrochoerus hydrochaeris" : "Capybara"
+  "propithecus coquereli" : "Coquerel's sifaka (Lemur)"
+  "marmota himalayan" : "Himalayan marmot"
+  "cyprinus carpio" : "Common Carp"
+  "varecia variegata" : "Black-and-white ruffed Lemur"
+
+
+output_settings:
+  output_dir: "output"
+  evaluation_dir: "evaluation"
+  visualization_dir: "visualization"
+  dataset_dir: "uniref50/baselinemodels"
+  prefix: "uniref50_baselinemodels"# default: none; default file name = <input_file_name>_<output_prefix>_output.csv

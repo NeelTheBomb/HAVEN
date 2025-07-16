@@ -22,7 +22,7 @@ sequence_settings:
     max_sequence_length: 256 # 6630 # 1024 # 1115
     truncate: False
     split_sequence: True
-    cls_token: False
+    cls_token: True
     feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
 
 mlm_settings:

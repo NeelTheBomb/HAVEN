@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+import pytaxonkit
 
 sys.path.append(os.path.join(os.getcwd(), "src"))
 from pathlib import Path
@@ -99,7 +100,7 @@ def process(config):
         dataset_filter.get_virus_metadata(input_file_path=input_file_path,
                                           taxon_metadata_dir_path=config.taxon_dir,
                                           output_file_path=metadata_dataset_file_path,
-                                          id=id)
+                                          id_col=id_col)
 
     if config.uprank_host_genus:
         upranked_dataset_file_path = os.path.join(output_dir, Path(input_file_path).stem + "_virus_host_genus.csv")

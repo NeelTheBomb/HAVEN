@@ -179,13 +179,18 @@ def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loade
         anneal_strategy='cos',
         div_factor=training_settings["div_factor"],
         final_div_factor=training_settings["final_div_factor"])
-    early_stopper = EarlyStopping(patience=10, min_delta=0)
+    early_stopper = EarlyStopping(patience=30, min_delta=0)
     model.train_iter = 0
     model.val_iter = 0
 
     # START: Model training with early stopping using validation
     # freeze the pretrained model_params for the first n_epochs_freeze
-    nn_utils.set_model_grad(model.pre_trained_model, grad_value=False)
+    # nn_utils.set_model_grad(model.module.pre_trained_model, grad_value=False)
+    if isinstance(model, torch.nn.DataParallel):
+        nn_utils.set_model_grad(model.module.pre_trained_model, grad_value=False)
+    else:
+        nn_utils.set_model_grad(model.pre_trained_model, grad_value=False)
+
 
     # train for n_epochs_freeze
     for e in range(n_epochs_freeze):
@@ -197,7 +202,13 @@ def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loade
             break
 
     # unfreeze the pretrained model_params for the next n_epochs_unfreeze
-    nn_utils.set_model_grad(model.pre_trained_model, grad_value=True)
+    # nn_utils.set_model_grad(model.module.pre_trained_model, grad_value=True)
+
+    if isinstance(model, torch.nn.DataParallel):
+        nn_utils.set_model_grad(model.module.pre_trained_model, grad_value=True)
+    else:
+        nn_utils.set_model_grad(model.pre_trained_model, grad_value=True)
+
 
     # reset early stopper
     early_stopper.reset()

@@ -57,7 +57,7 @@ class MultiClassEvaluation(EvaluationBase):
         pr_curves = []
         auprcs = []
         for y_pred_column in self.y_pred_columns:
-            precision, recall, _ = precision_recall_curve(y_true=df_itr[self.y_true_col].values, y_score=df_itr[y_pred_column].values, pos_label=y_pred_column)
+            precision, recall, _ = precision_recall_curve(y_true=df_itr[self.y_true_col].values, probas_pred=df_itr[y_pred_column].values, pos_label=y_pred_column)
             pr_curves.append(pd.DataFrame({"precision": precision, "recall": recall, self.class_col: y_pred_column}))
             auprcs.append(auc(recall, precision))
 
@@ -81,8 +81,8 @@ class MultiClassEvaluation(EvaluationBase):
         if self.evaluation_settings["auprc"]:
             visualization_utils.box_plot(self.evaluation_metrics_df, self.experiment_col, "auprc",
                                          self.visualization_output_file_path + "_auprc_boxplot.pdf")
-            # visualization_utils.curve_plot(df=self.pr_curves_df[self.pr_curves_df[self.itr_col] == itr_selected], x_col="recall", y_col="precision",
-            #                                color_group_col=self.class_col, style_group_col=self.experiment_col,
-            #                                output_file_path=self.visualization_output_file_path + "_precision_recall_curves.pdf", metadata=self.metadata)
+            visualization_utils.curve_plot(df=self.pr_curves_df[self.pr_curves_df[self.itr_col] == itr_selected], x_col="recall", y_col="precision",
+                                           color_group_col=self.class_col, style_group_col=self.experiment_col,
+                                           output_file_path=self.visualization_output_file_path + "_precision_recall_curves.pdf", metadata=self.metadata)
         return
 

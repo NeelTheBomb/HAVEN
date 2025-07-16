@@ -35,12 +35,9 @@ classification_settings:
       "Human": [ 9606 ]
       "Chicken": [ 9031 ]
       "Cat": [ 9685 ]
-      "Pig": [ 9823 ]
-      "Gray wolf": [ 9612 ]
-      "European rabbit": [ 9986 ]
   models:
     - name: "lr"
-      active: True
+      active: False
       C: [0.01, 0.1, 1]
       multiclass_type: "multinomial"
       max_iter: 500
@@ -51,7 +48,7 @@ classification_settings:
       max_depth: [3, 5]
 
     - name: "svm"
-      active: False
+      active: True
       C: [ 0.01, 0.1, 1, 10]
       kernel: "rbf"
 
@@ -60,4 +57,4 @@ output_settings:
   results_dir: "raw"
   visualizations_dir: "visualization"
   sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix:  "lr_run_one" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix:  "svm_3hosts" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

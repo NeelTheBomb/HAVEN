@@ -5,11 +5,11 @@ config_type: "virus_host_prediction_baseline_machine_learning"
   ## provide path to dataset folder
 input_settings:
   # Base input directory
-  input_dir: "input/data/coronaviridae/20250616"
+  input_dir: "input/data"
 
   # Name of file(s) in subdirectory to be read and processed.
   # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
-  file_names: [ "final_filtered_df.csv" ]
+  file_names: ["uniref50_98_percent_seq_length.csv"]
   # seeds to split the files into training and testing
   # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
@@ -29,18 +29,20 @@ classification_settings:
       k: 3
       kmer_prevalence_threshold: 0.1
   label_settings:
-    label_col: "virus_host_tax_id"
+    label_col: "virus_host_name"
     exclude_labels: [ "nan"]
     label_groupings:
-      "Human": [ 9606 ]
-      "Chicken": [ 9031 ]
-      "Cat": [ 9685 ]
-      "Pig": [ 9823 ]
-      "Gray wolf": [ 9612 ]
-      "European rabbit": [ 9986 ]
+      "Human": [ "homo sapiens" ]
+      "Pig": [ "sus scrofa" ]
+      "Capybara": [ "hydrochoerus hydrochaeris" ]
+      "Coquerel's sifaka (Lemur)" : [ "propithecus coquereli" ]
+      "Himalayan marmot" : [ "marmota himalayana" ]
+      "Common Carp": [ "cyprinus carpio" ]
+      "Black-and-white ruffed Lemur": [ "varecia variegata" ]
+
   models:
     - name: "lr"
-      active: True
+      active: False
       C: [0.01, 0.1, 1]
       multiclass_type: "multinomial"
       max_iter: 500
@@ -51,7 +53,7 @@ classification_settings:
       max_depth: [3, 5]
 
     - name: "svm"
-      active: False
+      active: True
       C: [ 0.01, 0.1, 1, 10]
       kernel: "rbf"
 
@@ -59,5 +61,5 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   visualizations_dir: "visualization"
-  sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts"
-  prefix:  "lr_run_one" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref50/svm_model"
+  prefix: "svm_model_98percent_seq_length_5itr" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

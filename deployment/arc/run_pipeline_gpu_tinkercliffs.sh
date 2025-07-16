@@ -2,7 +2,7 @@
 
 #SBATCH -J haven
 #SBATCH --account=seqevol
-#SBATCH --partition=l40s_normal_q
+#SBATCH --partition=a100_normal_q
 
 #SBATCH --mem=450G
 #SBATCH --nodes=1
@@ -27,7 +27,7 @@ conda info
 
 # Setup project and result directories
 PROJECT_DIR=$1
-LOGS_DIR=$PROJECT_DIR/output/logs/new_experiments
+LOGS_DIR=$PROJECT_DIR/output/logs
 echo "Project directory: $PROJECT_DIR"
 
 # Execute python script

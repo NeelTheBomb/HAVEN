@@ -1,0 +1,84 @@
+config_type: "virus_host_prediction"
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "input/data/coronaviridae/20250616"
+
+  # Name of file(s) in subdirectory to be read and processed.
+  # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
+  # file_names: [ "uniref90_final_msl1114.csv" ]
+  file_names: [ "final_filtered_df.csv" ]
+  # seeds to split the files into training and testing
+  # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
+  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+
+sequence_settings:
+    batch_size: 16 #changed this to 16
+    id_col: "uniref50_id"
+    sequence_col: "seq"
+    truncate: False
+    split_sequence: False
+    feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
+
+pre_train_settings:
+    model_name: "masked_language_modeling"
+    #model_path: "output/raw/uniref50_coronaviridae/pre-training/mlm/20250616/transformer_encoder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
+    model_path: "output/raw/uniref50_coronaviridae/pre-training/mlm/20250616/transformer_encoder-l_6-h_8-lr1e-4_msl256_b1024_splitseq_mlm_vs30_itr0_noclstoken.pth"
+    encoder_settings:
+      model_name: "transformer_encoder-l_6-h_8-lr1e-4-mlm"
+      n_heads: 8
+      depth: 6
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      max_seq_len: 256
+
+fine_tune_settings:
+  experiment: "virus_host_prediction"
+  n_iterations: 5 #changiing from 5 to 1
+  split_input: True
+  train_proportion: 0.8
+  classification_type: "multi"
+  save_model: True
+
+  training_settings:
+    n_epochs_freeze: 20 #changing from 20
+    n_epochs_unfreeze: 30 #changing from 30
+    max_lr: 1e-5 #changing this to 3e-4 to see if any changes occur
+    pct_start: 0.10
+    div_factor: 50.0 #changing to 25 from 50.0
+    final_div_factor: 10000.0 #changing from 10000.0
+
+  label_settings:
+    label_col: "virus_host_tax_id"
+    exclude_labels: [ "nan" ]
+    label_groupings:
+      "Human": [ 9606 ]
+      "Chicken": [ 9031 ]
+      "Cat": [ 9685 ]
+      "Pig": [ 9823 ]
+
+  task_settings:
+    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4"
+      name: "HAVEN"
+      active: True
+      mode: "train" # supported values: train, test
+      fine_tuned_model_path: ""
+      segment_len: 256
+      stride: 64
+      cls_token: False #testing with false
+      n_heads: 8
+      loss: "FocalLoss"
+      n_mlp_layers: 2
+      n_classes: 4
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: True
+
+output_settings:
+  output_dir: "output"
+  results_dir: "raw"
+  sub_dir: "uniref50_coronaviridae/uniref50_corona_top_hosts/new_experiments"
+  prefix: "4hosts_epoch50" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

@@ -27,7 +27,7 @@ conda info
 
 # Setup project and result directories
 PROJECT_DIR=$1
-LOGS_DIR=$PROJECT_DIR/output/logs/new_experiments
+LOGS_DIR=$PROJECT_DIR/output/logs/two_percent_prevalence_itr1_falcon_output
 echo "Project directory: $PROJECT_DIR"
 
 # Execute python script
