@@ -1,0 +1,112 @@
+config_type: "virus_host_prediction"
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "output/uniref90/"
+
+  # Name of file(s) in subdirectory to be read and processed.
+  # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
+  # file_names: [ "uniref90_final_msl1114.csv" ]
+  file_names: [ "sequence_filtered.csv" ]
+  # seeds to split the files into training and testing
+  # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
+  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+
+sequence_settings:
+    # changed batch size to 32 since using a dataset with smaller largest sequence 
+    batch_size: 32
+    id_col: "uniref90_id"
+    sequence_col: "seq"
+    truncate: False
+    split_sequence: False
+    feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
+
+pre_train_settings:
+  model_name: "masked_language_modeling"
+  model_path: "output/raw/uniref90/pre-training/mlm/20250729/haven_pretrained_viral_seq.pth" #FIX
+  # model_path: "output/raw/uniref90-viridae/pre-training/mlm/20241010/checkpoints/transformer_encoder-l_6-h_8-lr1e-4_msl2048_b128_nosplitseq_mlm_vs30_cls_allemb_itr0_checkpt11.pth"
+  encoder_settings:
+    model_name: "transformer_encoder-l_6-h_8-lr1e-5-mlm"
+    n_heads: 8
+    depth: 6
+    input_dim: 512 # input embedding dimension
+    hidden_dim: 1024
+    max_seq_len: 256
+
+fine_tune_settings:
+  experiment: "plant_prediction"
+  n_iterations: 5
+  split_input: True
+  train_proportion: 0.8
+  classification_type: "multi"
+  save_model: True
+
+  training_settings:
+    n_epochs_freeze: 20
+    n_epochs_unfreeze: 30
+    max_lr: 1e-5
+    pct_start: 0.10
+    div_factor: 25.0
+    final_div_factor: 10000.0
+
+  label_settings:
+    label_col: "virus_host_name"
+    exclude_labels: [ "nan" ]
+    label_groupings:
+      "Garlic": [ "Allium sativum" ]
+      "Grapevine": [ "Vitis vinifera" ]
+      "Tomato": [ "Solanum lycopersicum" ]
+      "Sweet cherry" : [ "Prunus avium" ]
+
+  task_settings:
+    - id: "host_prediction_sequence_msl2048cls_bn_fnn_2l_d1024_lr1e-4"
+      name: "BERT"
+      active: False
+      mode: "train" # supported values: train, test
+      fine_tuned_model_path: ""
+      cls_token: True
+      loss: "FocalLoss"
+      n_mlp_layers: 2
+      n_classes: 7
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: False
+
+    - id: "host_prediction_segment_msl256s64cls_bn_fnn_2l_d1024_lr1e-4"
+      name: "HAVEN_wo_Hierarchical_Attention"
+      active: False
+      mode: "train" # supported values: train, test
+      fine_tuned_model_path: ""
+      cls_token: True
+      stride: 64
+      loss: "FocalLoss"
+      n_mlp_layers: 2
+      n_classes: 4
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: False
+
+    - id: "hybrid_attention_plant_1e-5"
+      name: "HAVEN"
+      active: True
+      mode: "train" # supported values: train, test
+      fine_tuned_model_path: ""
+      segment_len: 256
+      stride: 64
+      cls_token: True
+      n_heads: 8
+      loss: "FocalLoss"
+      n_mlp_layers: 2
+      n_classes: 4
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: False
+
+output_settings:
+  output_dir: "output"
+  results_dir: "raw"
+  sub_dir: "uniref90/plants/itr_1"
+  prefix: "mlm_tfenc_plant" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
