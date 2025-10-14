@@ -1,0 +1,106 @@
+config_type: "few_shot_learning" # options: data_preprocessor, host_prediction, evaluation, transfer_learning, few_shot_learning
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "input/data/uniref90/20240131"
+
+  # Name of file(s) in subdirectory to be read and processed.
+  # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
+  # file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_lt_1percent_prevalence_seq_len_in_99percentile.csv" ]
+  file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_lt_1_gte_0.05_prcnt_prevalence_seq_len_in_99prcntile.csv" ]
+  # seeds to split the files into training and testing
+  # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
+  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+
+sequence_settings:
+  id_col: "uniref90_id"
+  sequence_col: "seq"
+  truncate: False
+  split: False
+  max_sequence_length: 256
+  feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
+
+label_settings:
+  label_col: "virus_host_name"
+
+few_shot_learn_settings:
+  experiment: "few_shot_learning_novel_host"
+  n_iterations: 5
+  split_input: True
+  train_proportion: 0.7
+  val_proportion: 0.1
+  test_proportion: 0.2
+  classification_type: "multi"
+  save_model: True
+  n_epochs: 500
+  batch_size: 16
+  max_lr: 1e-4
+  pct_start: 0.10
+  div_factor: 25.0
+  final_div_factor: 10000.0
+
+  meta_train_settings:
+    n_way_type: "fixed" # supported values: 'fixed', 'varying'
+    # if n_way_type = 'fixed', n_way is an integer;
+    # else if n_way_type = 'varying', n_way is a tuple as [n_way_min, n_way_max]
+    ## if n_way_max is not defined (e.g. [3, ], then n_way_max is set to the total number of labels in the dataset
+    n_way: 3 # e.g.: 3 or [3, 10]
+    n_shot: 5
+    n_query: 10
+    n_task: 100
+
+  meta_validate_settings:
+    n_way_type: "fixed"
+    n_way: 3
+    n_shot: 5
+    n_query: 10
+    n_task: 100
+
+  meta_test_settings:
+    n_way_type: "fixed"
+    n_way: 3 # default = if n_way is not configured, n_way is set to the , total number of labels in the dataset
+    n_shot: 5
+    n_query: -1 # -1 to test on all remaining samples of the test class
+    n_task: 100
+
+
+pre_trained_models:
+#  - name: "fnn-l_10-d_1024-lr1e-3"
+#    active: True
+#    mode: "train
+#    path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5/20240609/host_multi/fnn-l_10-d_1024-lr1e-3_itr0.pth"
+#    model_settings:
+#      n_mlp_layers: 10
+#      n_tokens: 27
+#      n_classes: 5
+#      input_dim: 512 # input embedding dimension
+#      hidden_dim: 1024
+
+  - id: "hybrid-attention_sl256st64vs30_ae_bn_fnn_2l_d1024_lr1e-4"
+    name: HAVEN
+    active: True
+    mode: "train"
+    path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240826/host_multi/fine_tuning_hybrid_cls/mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_msl256s64allemb_vs30cls_batchnorm_hybrid_attention_msl256s64ae_fnn_2l_d1024_lr1e-4_itr4.pth"
+    model_settings:
+      n_heads: 8
+      n_mlp_layers: 2
+      n_classes: 5
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      stride: 64
+      cls_token: True
+      data_parallel: False
+      encoder_settings:
+        n_heads: 8
+        depth: 6
+        input_dim: 512 # input embedding dimension
+        hidden_dim: 1024
+
+output_settings:
+  output_dir: "output"
+  results_dir: "raw"
+  sub_dir: "uniref90_embl_vertebrates_non_idv/20251014/host_multi/few_shot_learning"
+  prefix: "fsl_tr_w3s5q10_te_w3s1q-1_e100b32_split70-10-20" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

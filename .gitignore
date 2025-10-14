@@ -8,7 +8,7 @@
 *.zip
 *.tab
 **/input/data/**
-input
+input/*
 # output files
 output
 output/
