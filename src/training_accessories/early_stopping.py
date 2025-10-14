@@ -1,5 +1,5 @@
 import math
-
+import copy
 
 class EarlyStopping:
     def __init__(self, patience=10, min_delta=0):
@@ -21,7 +21,7 @@ class EarlyStopping:
             # Store the model_params as the current_best_model
             # Reset the patience_counter
             self.current_best_loss = val_loss
-            self.current_best_model = model
+            self.current_best_model = copy.deepcopy(model)
             self.patience_counter = 0
         else:
             # self.current_best_loss - val_loss is <= self.min_delta
