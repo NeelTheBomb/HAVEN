@@ -137,6 +137,7 @@ def execute(config):
             if mode == "train":
                 # Load the pre-trained host prediction model_params
                 prediction_model.load_state_dict(torch.load(prediction_model_path, map_location=nn_utils.get_device()))
+                print(f"Loaded fine-tuned model from {prediction_model_path}")
                 few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=prediction_model)
                 result_df, auprc_df, few_shot_classifier = run_few_shot_learning(few_shot_classifier, train_dataset_loader, val_dataset_loader, test_dataset_loader, few_shot_learn_settings,
                                       meta_train_settings, meta_validate_settings, meta_test_settings, model_name)
