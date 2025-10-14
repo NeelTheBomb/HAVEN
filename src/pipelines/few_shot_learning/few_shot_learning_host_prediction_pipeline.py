@@ -47,7 +47,7 @@ def execute(config):
         "n_epochs": few_shot_learn_settings["n_epochs"],
         "lr": few_shot_learn_settings["max_lr"],
         "dataset": input_file_names[0],
-        "outout_prefix": output_prefix
+        "output_prefix": output_prefix
     }
 
     # model_params store filepath

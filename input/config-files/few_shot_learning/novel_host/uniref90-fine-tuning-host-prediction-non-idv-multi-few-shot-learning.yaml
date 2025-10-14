@@ -35,7 +35,7 @@ few_shot_learn_settings:
   test_proportion: 0.2
   classification_type: "multi"
   save_model: True
-  n_epochs: 100
+  n_epochs: 500
   batch_size: 16
   max_lr: 1e-4
   pct_start: 0.10
@@ -84,7 +84,6 @@ pre_trained_models:
     active: True
     mode: "train"
     path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240826/host_multi/fine_tuning_hybrid_cls/mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_msl256s64allemb_vs30cls_batchnorm_hybrid_attention_msl256s64ae_fnn_2l_d1024_lr1e-4_itr4.pth"
-    # path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240826/host_multi/fine_tuning_hybrid/mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_msl256s64allemb_vs30_batchnorm_hybrid_attention_msl256s64ae_fnn_2l_d1024_lr1e-4_itr4.pth"
     model_settings:
       n_heads: 8
       n_mlp_layers: 2
@@ -103,5 +102,5 @@ pre_trained_models:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv/20250327/host_multi/few_shot_learning"
+  sub_dir: "uniref90_embl_vertebrates_non_idv/20251014/host_multi/few_shot_learning"
   prefix: "fsl_tr_w3s5q10_te_w3s1q-1_e100b32_split70-10-20" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
