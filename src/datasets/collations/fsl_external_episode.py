@@ -25,7 +25,13 @@ class FewShotLearningExternalEpisode:
     def __call__(self, batch):
         sequences, labels = zip(*batch)
 
-        sequences = np.array(sequences) # convert from tuple of tuples ((,), (,), (,), (,)) to list of tuples [(,), (,), (,), (,)]
+        # direct conversion to numpy array makes the seq_len as strings
+        # hack:
+        # 1. convert to numpy to figure out the dtype (including maximum length of sequence)
+        # 2. convert to list of tuples as numpy definition with dtype does not accept tuple of tuples
+        # 3. define numpy array with column names and dtypes
+        x = np.array(sequences) # convert from tuple of tuples ((,), (,), (,), (,)) to list of tuples [(,), (,), (,), (,)]
+        sequences = np.array(list(sequences), dtype=np.dtype([("seq", x.dtype), ("seq_len", np.int32)]))
         support_sequences = []
         support_labels = []
         query_sequences = []

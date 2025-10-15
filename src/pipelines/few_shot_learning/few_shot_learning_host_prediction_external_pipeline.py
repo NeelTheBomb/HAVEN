@@ -12,7 +12,7 @@ import wandb
 from models.baseline.nlp.transformer.transformer import TransformerEncoder
 from training_accessories.early_stopping import EarlyStopping
 from utils import utils, dataset_utils, nn_utils, evaluation_utils, constants, mapper
-from few_shot_learning.prototypical_network_few_shot_classifier import PrototypicalNetworkFewShotClassifier
+from few_shot_learning.prototypical_network_few_shot_classifier_external import PrototypicalNetworkFewShotClassifierExternal
 
 
 def execute(config):
@@ -126,7 +126,7 @@ def execute(config):
                 # Load the pre-trained host prediction model_params
                 fine_tuned_model.load_state_dict(torch.load(fine_tuned_model_path, map_location=nn_utils.get_device()))
                 print(f"Loaded fine-tuned model from {fine_tuned_model_path}.")
-                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=fine_tuned_model)
+                few_shot_classifier = PrototypicalNetworkFewShotClassifierExternal(pre_trained_model=fine_tuned_model)
                 result_df, auprc_df, few_shot_classifier = run_few_shot_learning(few_shot_classifier, train_dataset_loader, val_dataset_loader, test_dataset_loader, few_shot_learn_settings,
                                       meta_train_settings, meta_validate_settings, meta_test_settings, model_name)
             elif mode == "test":
@@ -134,7 +134,7 @@ def execute(config):
                 test_dataset_loader = dataset_utils.get_external_episodic_dataset_loader(df, sequence_settings, label_col,
                                                                                 meta_test_settings, model_name)
 
-                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=fine_tuned_model)
+                few_shot_classifier = PrototypicalNetworkFewShotClassifierExternal(pre_trained_model=fine_tuned_model)
 
                 # load the pre-trained few-shot classifier
                 few_shot_classifier.load_state_dict(torch.load(fine_tuned_model_path, map_location=nn_utils.get_device()))
@@ -147,7 +147,7 @@ def execute(config):
                 evaluate_dataset_loader = dataset_utils.get_evaluation_episodic_dataset_loader(sequence_settings,
                                                                                     label_col, meta_evaluate_settings)
                 # mode=evaluate used for cross-domain few-shot evaluation: prediction of hosts in novel virus (hosts may or may not be novel)
-                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=fine_tuned_model)
+                few_shot_classifier = PrototypicalNetworkFewShotClassifierExternal(pre_trained_model=fine_tuned_model)
 
                 # load the pre-trained few-shot classifier
                 few_shot_classifier.load_state_dict(torch.load(fine_tuned_model_path, map_location=nn_utils.get_device()))
