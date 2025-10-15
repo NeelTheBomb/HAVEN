@@ -31,9 +31,10 @@ class ProteinSequenceProstT5Dataset(ProteinSequenceDatasetWithID):
 
 
 class ProteinSequenceProtT5Dataset(ProteinSequenceDatasetWithID):
-    def __init__(self, df, sequence_col, max_seq_len, truncate, label_col, id_col, include_id_col):
+    def __init__(self, df, sequence_col, max_seq_len, truncate, label_col, id_col, include_id_col, include_label_col=False):
         super(ProteinSequenceProtT5Dataset, self).__init__(df, id_col, sequence_col, max_seq_len, truncate, label_col)
         self.include_id_col = include_id_col
+        self.include_label_col = include_label_col
 
     def __getitem__(self, idx: int):
         # loc selects based on index in df
@@ -50,6 +51,8 @@ class ProteinSequenceProtT5Dataset(ProteinSequenceDatasetWithID):
         # only the amino acid tokens while excluding the padding, start, and end special tokens.
         if self.include_id_col:
             return record[self.id_col], (sequence, sequence_length), torch.tensor(record[self.label_col], device=nn_utils.get_device())
+        elif self.include_label_col:
+            return (sequence, sequence_length), record[self.label_col]
         else:
             return (sequence, sequence_length), torch.tensor(record[self.label_col], device=nn_utils.get_device())
 

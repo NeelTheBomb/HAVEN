@@ -33,6 +33,7 @@ def execute(config):
     label_settings = config["label_settings"]
 
     few_shot_learn_settings = config["few_shot_learn_settings"]
+    few_shot_learn_settings["batch_size"] = sequence_settings["batch_size"]
     meta_train_settings  = few_shot_learn_settings["meta_train_settings"]
     meta_validate_settings = few_shot_learn_settings["meta_validate_settings"]
     meta_test_settings = few_shot_learn_settings["meta_test_settings"]
@@ -76,19 +77,14 @@ def execute(config):
                                                                                           test_proportion=few_shot_learn_settings["test_proportion"],
                                                                                           seed=input_split_seeds[iter])
 
-            train_dataset_loader = dataset_utils.get_episodic_dataset_loader(train_df, sequence_settings, label_col, meta_train_settings)
-            val_dataset_loader = dataset_utils.get_episodic_dataset_loader(val_df, sequence_settings, label_col, meta_validate_settings)
-            test_dataset_loader = dataset_utils.get_episodic_dataset_loader(test_df, sequence_settings, label_col, meta_test_settings)
 
-        prediction_model = None
         few_shot_classifier = None
-        prediction_model_path = None
-        prediction_models = config["pre_trained_models"]
-
-        for model in prediction_models:
+        models = config["models"]
+        fine_tuned_model = None
+        for model in models:
             model_id = model["id"]
             model_name = model["name"]
-            prediction_model_path = model["path"]
+            fine_tuned_model_path = model["path"]
             mode = model["mode"]
             # when mode == 'train', pre_trained_model_path points to a pre-trained protein sequence classifier
             # when mode = 'test' or 'evaluate', pre_trained_model_path points to a pre-trained few shot classifier
@@ -99,24 +95,10 @@ def execute(config):
             if model["active"] is False:
                 print(f"Skipping {model_name} ...")
                 continue
-            model_settings["segment_len"] = max_sequence_length
-            # if the classifier includes a pre-trained model transformer encoder, load it.
-            if "encoder_settings" in model_settings:
-                mlm_encoder_settings = model_settings["encoder_settings"].copy()
-                mlm_encoder_settings["vocab_size"] = constants.VOCAB_SIZE
-                # add max_sequence_length to pre_train_encoder_settings
-                mlm_encoder_settings["max_seq_len"] = max_sequence_length
-                # get the transformer encoder model pretrained using mlm
-                mlm_encoder_model = TransformerEncoder.get_transformer_encoder(mlm_encoder_settings, model_settings["cls_token"])
-
-                # NOTE: this pre_trained_model is the MLM pre-trained model_params
-                # this is different from what we call "pre_trained" in the context of few-shot-learning,
-                # i.e., model_params pre-trained using few-shot learning for the rare-class classification task.
-                model_settings["pre_trained_model"] = mlm_encoder_model
 
             if model_name in mapper.model_map:
                 print(f"Executing {model_name} in {mode} mode.")
-                prediction_model = mapper.model_map[model_name].get_model(model_params=model_settings)
+                fine_tuned_model = mapper.model_map[model_name].get_model(model_params=model_settings)
             else:
                 print(f"ERROR: Unknown model {model_name}.")
                 continue
@@ -135,32 +117,40 @@ def execute(config):
                        name=f"iter_{iter}")
 
             if mode == "train":
+                train_dataset_loader = dataset_utils.get_external_episodic_dataset_loader(train_df, sequence_settings, label_col,
+                                                                                 meta_train_settings, model_name)
+                val_dataset_loader = dataset_utils.get_external_episodic_dataset_loader(val_df, sequence_settings, label_col,
+                                                                               meta_validate_settings, model_name)
+                test_dataset_loader = dataset_utils.get_external_episodic_dataset_loader(test_df, sequence_settings, label_col,
+                                                                                meta_test_settings, model_name)
                 # Load the pre-trained host prediction model_params
-                prediction_model.load_state_dict(torch.load(prediction_model_path, map_location=nn_utils.get_device()))
-                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=prediction_model)
+                fine_tuned_model.load_state_dict(torch.load(fine_tuned_model_path, map_location=nn_utils.get_device()))
+                print(f"Loaded fine-tuned model from {fine_tuned_model_path}.")
+                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=fine_tuned_model)
                 result_df, auprc_df, few_shot_classifier = run_few_shot_learning(few_shot_classifier, train_dataset_loader, val_dataset_loader, test_dataset_loader, few_shot_learn_settings,
                                       meta_train_settings, meta_validate_settings, meta_test_settings, model_name)
             elif mode == "test":
                 # mode=test used for cross-domain few-shot evaluation: prediction of hosts in novel virus (hosts may or may not be novel)
-                test_dataset_loader = dataset_utils.get_episodic_dataset_loader(df, sequence_settings, label_col,
-                                                                                meta_test_settings)
+                test_dataset_loader = dataset_utils.get_external_episodic_dataset_loader(df, sequence_settings, label_col,
+                                                                                meta_test_settings, model_name)
 
-                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=prediction_model)
+                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=fine_tuned_model)
 
                 # load the pre-trained few-shot classifier
-                few_shot_classifier.load_state_dict(torch.load(prediction_model_path, map_location=nn_utils.get_device()))
+                few_shot_classifier.load_state_dict(torch.load(fine_tuned_model_path, map_location=nn_utils.get_device()))
                 result_df, auprc_df = meta_test_model(few_shot_classifier, test_dataset_loader, batch_size=few_shot_learn_settings["batch_size"])
 
             elif mode == "evaluate":
                 meta_evaluate_settings = few_shot_learn_settings["meta_evaluate_settings"]
                 # used in few shot evaluation, where split_input=False in classification_settings and mode=evaluate in model_params
+                # TODO: update the next line to be compatible with external models
                 evaluate_dataset_loader = dataset_utils.get_evaluation_episodic_dataset_loader(sequence_settings,
                                                                                     label_col, meta_evaluate_settings)
                 # mode=evaluate used for cross-domain few-shot evaluation: prediction of hosts in novel virus (hosts may or may not be novel)
-                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=prediction_model)
+                few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=fine_tuned_model)
 
                 # load the pre-trained few-shot classifier
-                few_shot_classifier.load_state_dict(torch.load(prediction_model_path, map_location=nn_utils.get_device()))
+                few_shot_classifier.load_state_dict(torch.load(fine_tuned_model_path, map_location=nn_utils.get_device()))
                 result_df, auprc_df = meta_test_model(few_shot_classifier, evaluate_dataset_loader,
                                                       batch_size=few_shot_learn_settings["batch_size"])
             else:
