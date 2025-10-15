@@ -7,7 +7,7 @@ from models.protein_sequence_classification import ProteinSequenceClassification
 class PrototypicalNetworkFewShotClassifierExternal(nn.Module):
     def __init__(self, pre_trained_model: ProteinSequenceClassification):
         super(PrototypicalNetworkFewShotClassifierExternal, self).__init__()
-        # self.pre_trained_model = nn.DataParallel(pre_trained_model)
+        self.pre_trained_model = nn.DataParallel(pre_trained_model)
 
     def forward(self, support_sequences, support_labels, query_sequences, batch_size):
         # compute prototypes for each label
