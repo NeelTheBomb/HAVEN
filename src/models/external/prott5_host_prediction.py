@@ -27,6 +27,8 @@ class ProtT5_VirusHostPrediction(ProteinSequenceClassification):
 
     def get_embedding(self, X):
         sequences, sequence_lengths = X
+        # print(f"in ProtT5_VirusHostPrediction sequences: {sequences}")
+        # print(f"in ProtT5_VirusHostPrediction sequence_lengths: {sequence_lengths}")
         token_encoding = self.tokenizer.batch_encode_plus(sequences, add_special_tokens=True, padding="longest")
         input_ids = torch.tensor(token_encoding["input_ids"]).to(nn_utils.get_device())
         attention_mask = torch.tensor(token_encoding["attention_mask"]).to(nn_utils.get_device())

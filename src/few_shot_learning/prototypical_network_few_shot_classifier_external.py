@@ -18,8 +18,8 @@ class PrototypicalNetworkFewShotClassifierExternal(nn.Module):
             # assuming n_shot is within the server memory constraints
             # i.e, n_shot <= batch_size
             support_indices = torch.nonzero(support_labels == label).squeeze().detach().cpu().numpy()
-
-            label_support_features, _ = self.pre_trained_model(support_sequences[support_indices], embedding_only=True)
+            selected_support_sequences = support_sequences[support_indices]
+            label_support_features, _ = self.pre_trained_model(zip(*selected_support_sequences), embedding_only=True)
             # prototype is the mean of the support features
             prototypes.append(label_support_features.mean(0))
             del label_support_features # mark for deletion
@@ -54,7 +54,7 @@ class PrototypicalNetworkFewShotClassifierExternal(nn.Module):
             if mini_batch.shape[0] < n_gpus:
                 query_features = self.compute_query_features_with_repetition(mini_batch, n_gpus)
             else:
-                query_features, _ = self.pre_trained_model(mini_batch, embedding_only=True)
+                query_features, _ = self.pre_trained_model(zip(*mini_batch), embedding_only=True)
 
             output.append(-torch.cdist(query_features, prototypes))
 

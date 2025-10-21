@@ -74,7 +74,7 @@ models:
     mode: "train"
     path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240131/host_multi/external/uniref90viridae_prot_t5_xl_uniref50_msl2048_fnn_2l_d1024_lr3e-4_itr4_itr0.pth"
     model_settings:
-      pre_trained_model_link: "Rostlab/prot_t5_xl_uniref50" #"Rostlab/prot_t5_xl_uniref50"
+      pre_trained_model_link: "Rostlab/prot_t5_xl_uniref50" #"Rostlab/prot_t5_xl_uniref50" #Rostlab/prot_t5_base_mt_uniref50
       hugging_face_cache_dir: "output/cache_dir"
       n_mlp_layers: 2
       n_classes: 5
