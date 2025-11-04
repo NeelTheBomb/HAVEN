@@ -20,8 +20,8 @@ sequence_settings:
   sequence_col: "seq"
   truncate: True
   split: False
-  max_sequence_length: 2048
-  batch_size: 16
+  max_sequence_length: 256
+  batch_size: 8
   feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
 
 label_settings:
@@ -68,7 +68,7 @@ few_shot_learn_settings:
 
 
 models:
-  - id: "prot_t5_xl_uniref50_msl2048_fnn_2l_d1024_lr3e-4_itr0"
+  - id: "prot_t5_xl_uniref50_msl256_fnn_2l_d1024_lr3e-4_itr0"
     name: "ProtT5"
     active: True
     mode: "train"
@@ -85,5 +85,5 @@ models:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv/20251014/host_multi/few_shot_learning_external"
+  sub_dir: "uniref90_embl_vertebrates_non_idv/20251104/host_multi/few_shot_learning_external"
   prefix: "fsl_tr_w3s5q10_te_w3s1q-1_e100b16_split70-10-20" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
