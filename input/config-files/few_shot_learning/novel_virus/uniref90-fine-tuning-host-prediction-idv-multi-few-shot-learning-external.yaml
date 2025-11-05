@@ -1,0 +1,94 @@
+config_type: "few_shot_learning_external" # options: data_preprocessor, host_prediction, evaluation, transfer_learning, few_shot_learning
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "input/data/uniref90/20240131"
+
+  # Name of file(s) in subdirectory to be read and processed.
+  # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
+  # file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_idv_seen_hosts_w_non_idv_wo_human_seqlen_lte_99prcntile.csv" ]
+  # file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_idv_unseen_hosts_w_non_idv_seqlen_lte_99prcntile.csv" ]
+  file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_idv.csv" ]
+  # seeds to split the files into training and testing
+  # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
+  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+
+sequence_settings:
+  id_col: "uniref90_id"
+  sequence_col: "seq"
+  truncate: False
+  split: False
+  max_sequence_length: 256
+  batch_size: 8
+  feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
+
+label_settings:
+  label_col: "virus_host_name"
+
+few_shot_learn_settings:
+  experiment: "few_shot_learning_novel_virus_prott5_itr0"
+  n_iterations: 1
+  split_input: False
+  classification_type: "multi"
+  n_epochs: 1
+  max_lr: 3e-4
+  pct_start: 0.10
+  div_factor: 25.0
+  final_div_factor: 10000.0
+
+  meta_train_settings:
+    n_way_type: "fixed" # supported values: 'fixed', 'varying'
+    # if n_way_type = 'fixed', n_way is an integer;
+    # else if n_way_type = 'varying', n_way is a tuple as [n_way_min, n_way_max]
+    ## if n_way_max is not defined (e.g. [3, ], then n_way_max is set to the total number of labels in the dataset
+    n_way: 3 # e.g.: 3 or [3, 10]
+    n_shot: 5
+    n_query: 10
+    n_task: 100
+
+  meta_validate_settings:
+    n_way_type: "fixed"
+    n_way: 3
+    n_shot: 5
+    n_query: 10
+    n_task: 100
+
+  meta_test_settings:
+    n_way_type: "fixed"
+    n_way:  # default = None. if n_way is not configured, n_way is set to the total number of labels in the dataset
+    n_shot: 5
+    n_query: -1 # -1 to test on all remaining samples of the test class
+    n_task: 1
+
+  meta_evaluate_settings:
+    n_way_type: "fixed"
+    n_way:  # default = None. if n_way is not configured, n_way is set to the total number of labels in the dataset
+    n_shot: 5
+    n_query: -1 # -1 to test on all remaining samples of the test class
+    n_task: 1
+    shot_dataset_filepath: "input/data/uniref90/20240131/uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_gte_0.05_prcnt_prevalence_seqlen_lte_99prcntile.csv"
+    query_dataset_filepath: "input/data/uniref90/20240131/uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_idv.csv"
+
+models:
+  - id: "prot_t5_xl_uniref50_msl2048_fnn_2l_d1024_lr3e-4_itr0"
+    name: "ProtT5"
+    active: True
+    mode: "test"
+    path: "output/raw/uniref90_embl_vertebrates_non_idv/20251104/host_multi/few_shot_learning_external/fsl_tr_w3s5q10_te_w3s1q-1_e100b16_split70-10-20_ProtT5_itr0.pth"
+    model_settings:
+      pre_trained_model_link: "Rostlab/prot_t5_xl_uniref50" #"Rostlab/prot_t5_xl_uniref50" #Rostlab/prot_t5_base_mt_uniref50
+      hugging_face_cache_dir: "output/cache_dir"
+      n_mlp_layers: 2
+      n_classes: 5
+      input_dim: 1024 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: False
+
+output_settings:
+  output_dir: "output"
+  results_dir: "raw"
+  sub_dir: "uniref90_embl_vertebrates_idv_all_hosts/20251105/host_multi/few_shot_learning_external"
+  prefix: "fsl_test_w23s5q-1_tsk1e1b8itr5_split70-10-20-" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
