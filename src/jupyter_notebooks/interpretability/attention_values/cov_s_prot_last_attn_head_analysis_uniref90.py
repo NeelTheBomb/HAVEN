@@ -200,7 +200,7 @@ plt.clf()
 plt.rcParams["xtick.labelsize"] = 40
 plt.rcParams["ytick.labelsize"] = 40
 plt.rcParams.update({'font.size': 40})
-fig, axs = plt.subplots(4, 2, figsize=(80, 100), sharex=False, sharey=True)
+c
 
 c = 0
 for i in range(4):
