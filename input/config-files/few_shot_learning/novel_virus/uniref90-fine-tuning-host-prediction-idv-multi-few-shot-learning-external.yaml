@@ -33,6 +33,7 @@ few_shot_learn_settings:
   n_iterations: 1
   split_input: False
   classification_type: "multi"
+  save_model: False
   n_epochs: 1
   max_lr: 3e-4
   pct_start: 0.10
@@ -76,7 +77,7 @@ models:
   - id: "prot_t5_xl_uniref50_msl2048_fnn_2l_d1024_lr3e-4_itr0"
     name: "ProtT5"
     active: True
-    mode: "test"
+    mode: "evaluate"
     path: "output/raw/uniref90_embl_vertebrates_non_idv/20251104/host_multi/few_shot_learning_external/fsl_tr_w3s5q10_te_w3s1q-1_e100b16_split70-10-20_ProtT5_itr0.pth"
     model_settings:
       pre_trained_model_link: "Rostlab/prot_t5_xl_uniref50" #"Rostlab/prot_t5_xl_uniref50" #Rostlab/prot_t5_base_mt_uniref50
@@ -91,4 +92,4 @@ output_settings:
   output_dir: "output"
   results_dir: "raw"
   sub_dir: "uniref90_embl_vertebrates_idv_all_hosts/20251105/host_multi/few_shot_learning_external"
-  prefix: "fsl_test_w23s5q-1_tsk1e1b8itr5_split70-10-20-" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  prefix: "fsl_test_w167s5q-1_tsk1e1b8itr5_split70-10-20-" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

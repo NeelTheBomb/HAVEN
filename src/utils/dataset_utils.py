@@ -309,3 +309,39 @@ def get_evaluation_episodic_dataset_loader(sequence_settings, label_col, few_sho
     return DataLoader(dataset=dataset,
                       batch_sampler=task_sampler,
                       collate_fn=fsl_episode)
+
+def get_external_evaluation_episodic_dataset_loader(sequence_settings, label_col, few_shot_evaluate_settings, name, include_id_col=False):
+    id_col = sequence_settings["id_col"]
+    sequence_col = sequence_settings["sequence_col"]
+    max_sequence_length = sequence_settings["max_sequence_length"]
+    dataset_type_col_name = "dataset_type"
+
+    # read the input datasets separately and add a tag denoting their type: support or query
+    support_df = pd.read_csv(few_shot_evaluate_settings["shot_dataset_filepath"], usecols=[id_col, sequence_col, label_col])
+    support_df[dataset_type_col_name] = "support"
+    query_df = pd.read_csv(few_shot_evaluate_settings["query_dataset_filepath"], usecols=[id_col, sequence_col, label_col])
+    query_df[dataset_type_col_name] = "query"
+
+    df = pd.concat([support_df, query_df]).reset_index()
+
+    dataset = mapper.dataset_map[name](df=df, sequence_col=sequence_settings["sequence_col"],
+                                       max_seq_len=sequence_settings["max_sequence_length"],
+                                       truncate=sequence_settings["truncate"],
+                                       label_col=label_col,
+                                       id_col=sequence_settings["id_col"],
+                                       include_id_col=include_id_col,
+                                       include_label_col=True)
+
+    task_sampler = FewShotLearningEvaluateTaskSampler(dataset=dataset,
+                                                   n_way=few_shot_evaluate_settings["n_way"],
+                                                   n_shot=few_shot_evaluate_settings["n_shot"],
+                                                   n_query=few_shot_evaluate_settings["n_query"],
+                                                   n_task=few_shot_evaluate_settings["n_task"])
+
+    fsl_episode = FewShotLearningExternalEpisode(n_shot=few_shot_evaluate_settings["n_shot"],
+                                                 n_query=few_shot_evaluate_settings["n_query"],
+                                                 max_seq_length=None, shuffle=False)
+
+    return DataLoader(dataset=dataset,
+                      batch_sampler=task_sampler,
+                      collate_fn=fsl_episode)

@@ -143,9 +143,8 @@ def execute(config):
             elif mode == "evaluate":
                 meta_evaluate_settings = few_shot_learn_settings["meta_evaluate_settings"]
                 # used in few shot evaluation, where split_input=False in classification_settings and mode=evaluate in model_params
-                # TODO: update the next line to be compatible with external models
-                evaluate_dataset_loader = dataset_utils.get_evaluation_episodic_dataset_loader(sequence_settings,
-                                                                                    label_col, meta_evaluate_settings)
+                evaluate_dataset_loader = dataset_utils.get_external_evaluation_episodic_dataset_loader(sequence_settings,
+                                                                                    label_col, meta_evaluate_settings, model_name)
                 # mode=evaluate used for cross-domain few-shot evaluation: prediction of hosts in novel virus (hosts may or may not be novel)
                 few_shot_classifier = PrototypicalNetworkFewShotClassifierExternal(pre_trained_model=fine_tuned_model)
 
