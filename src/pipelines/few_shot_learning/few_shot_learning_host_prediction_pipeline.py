@@ -105,10 +105,12 @@ def execute(config):
                 mlm_encoder_settings = model_settings["encoder_settings"].copy()
                 mlm_encoder_settings["vocab_size"] = constants.VOCAB_SIZE
                 # add max_sequence_length to pre_train_encoder_settings
-                mlm_encoder_settings["max_seq_len"] = max_sequence_length
+                # mlm_encoder_settings["max_seq_len"] = max_sequence_length
                 # get the transformer encoder model pretrained using mlm
                 mlm_encoder_model = TransformerEncoder.get_transformer_encoder(mlm_encoder_settings, model_settings["cls_token"])
-
+                ## TESTING
+                #mlm_encoder_model.load_state_dict(torch.load(prediction_model_path, map_location=nn_utils.get_device()))
+                #print(f"Loaded pre-trained segment encoder model from {prediction_model_path}")
                 # NOTE: this pre_trained_model is the MLM pre-trained model_params
                 # this is different from what we call "pre_trained" in the context of few-shot-learning,
                 # i.e., model_params pre-trained using few-shot learning for the rare-class classification task.
@@ -136,8 +138,8 @@ def execute(config):
 
             if mode == "train":
                 # Load the pre-trained host prediction model_params
-                prediction_model.load_state_dict(torch.load(prediction_model_path, map_location=nn_utils.get_device()))
-                print(f"Loaded fine-tuned model from {prediction_model_path}")
+                # prediction_model.load_state_dict(torch.load(prediction_model_path, map_location=nn_utils.get_device()))
+                # print(f"Loaded fine-tuned model from {prediction_model_path}")
                 few_shot_classifier = PrototypicalNetworkFewShotClassifier(pre_trained_model=prediction_model)
                 result_df, auprc_df, few_shot_classifier = run_few_shot_learning(few_shot_classifier, train_dataset_loader, val_dataset_loader, test_dataset_loader, few_shot_learn_settings,
                                       meta_train_settings, meta_validate_settings, meta_test_settings, model_name)
@@ -203,7 +205,7 @@ def run_few_shot_learning(model, train_dataset_loader, val_dataset_loader, test_
         anneal_strategy='cos',
         div_factor=few_shot_learning_settings["div_factor"],
         final_div_factor=few_shot_learning_settings["final_div_factor"])
-    early_stopper = EarlyStopping(patience=10, min_delta=0)
+    early_stopper = EarlyStopping(patience=50, min_delta=0)
     model.train_iter = 0
     model.val_iter = 0
 
