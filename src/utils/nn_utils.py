@@ -40,7 +40,7 @@ def get_criterion(loss, class_weights=None):
         criterion = nn.MultiMarginLoss()
     if loss == "FocalLoss":
 #        criterion = FocalLoss(alpha=class_weights, gamma=2) ### ONLY for LOSS TESTING
-        criterion = FocalLoss(alpha=class_weights, gamma=1)
+        criterion = FocalLoss(alpha=class_weights, gamma=0)
     return criterion
 
 
