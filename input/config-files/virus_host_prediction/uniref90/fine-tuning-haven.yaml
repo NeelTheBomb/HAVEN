@@ -25,7 +25,7 @@ sequence_settings:
 
 pre_train_settings:
   model_name: "masked_language_modeling"
-  model_path: "output/raw/uniref90-viridae/pre-training/mlm/20240821/transformer_enc oder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
+  model_path: "output/raw/uniref90-viridae/pre-training/mlm/20240821/transformer_encoder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
   # model_path: "output/raw/uniref90-viridae/pre-training/mlm/20241010/checkpoints/transformer_encoder-l_6-h_8-lr1e-4_msl2048_b128_nosplitseq_mlm_vs30_cls_allemb_itr0_checkpt11.pth"
   encoder_settings:
     model_name: "transformer_encoder-l_6-h_8-lr1e-4-mlm"
@@ -89,7 +89,7 @@ fine_tune_settings:
       hidden_dim: 1024
       data_parallel: False
 
-    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4"
+    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-4"
       name: "HAVEN"
       active: True
       mode: "train" # supported values: train, test

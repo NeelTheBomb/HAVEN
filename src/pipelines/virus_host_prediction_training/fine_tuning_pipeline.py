@@ -179,7 +179,7 @@ def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loade
         anneal_strategy='cos',
         div_factor=training_settings["div_factor"],
         final_div_factor=training_settings["final_div_factor"])
-    early_stopper = EarlyStopping(patience=30, min_delta=0)
+    early_stopper = EarlyStopping(patience=3, min_delta=0)
     model.train_iter = 0
     model.val_iter = 0
 
