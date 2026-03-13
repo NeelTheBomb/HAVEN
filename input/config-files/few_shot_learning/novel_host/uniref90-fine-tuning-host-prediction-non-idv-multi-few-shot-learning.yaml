@@ -13,7 +13,7 @@ input_settings:
   file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_lt_1_gte_0.05_prcnt_prevalence_seq_len_in_99prcntile.csv" ]
   # seeds to split the files into training and testing
   # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
-  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+  split_seeds: [ 12612648 ] # [12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
   id_col: "uniref90_id"
@@ -27,17 +27,17 @@ label_settings:
   label_col: "virus_host_name"
 
 few_shot_learn_settings:
-  experiment: "few_shot_learning_novel_host"
-  n_iterations: 5
+  experiment: "few_shot_learning_novel_host-itr0-pretrainedmodel-withupdate-patience50"
+  n_iterations: 1
   split_input: True
   train_proportion: 0.7
   val_proportion: 0.1
   test_proportion: 0.2
   classification_type: "multi"
   save_model: True
-  n_epochs: 100
+  n_epochs: 500
   batch_size: 16
-  max_lr: 1e-4
+  max_lr: 3e-5
   pct_start: 0.10
   div_factor: 25.0
   final_div_factor: 10000.0
@@ -79,12 +79,12 @@ pre_trained_models:
 #      input_dim: 512 # input embedding dimension
 #      hidden_dim: 1024
 
-  - id: "hybrid-attention_sl256st64vs30_ae_bn_fnn_2l_d1024_lr1e-4"
+  - id: "hybrid-attention_sl256st64vs30_ae_bn_fnn_2l_d1024_lr3e-5"
     name: HAVEN
     active: True
     mode: "train"
-    path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240826/host_multi/fine_tuning_hybrid_cls/mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_msl256s64allemb_vs30cls_batchnorm_hybrid_attention_msl256s64ae_fnn_2l_d1024_lr1e-4_itr4.pth"
-    # path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240826/host_multi/fine_tuning_hybrid/mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_msl256s64allemb_vs30_batchnorm_hybrid_attention_msl256s64ae_fnn_2l_d1024_lr1e-4_itr4.pth"
+    #path: "output/raw/uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240826/host_multi/fine_tuning_hybrid_cls/mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_msl256s64allemb_vs30cls_batchnorm_hybrid_attention_msl256s64ae_fnn_2l_d1024_lr1e-4_itr4.pth"
+    path: "output/raw/uniref90-viridae/pre-training/mlm/20240821/transformer_encoder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
     model_settings:
       n_heads: 8
       n_mlp_layers: 2
@@ -99,9 +99,10 @@ pre_trained_models:
         depth: 6
         input_dim: 512 # input embedding dimension
         hidden_dim: 1024
+        max_seq_len: 256
 
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv/20250327/host_multi/few_shot_learning"
-  prefix: "fsl_tr_w3s5q10_te_w3s1q-1_e100b32_split70-10-20" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref90_embl_vertebrates_non_idv/20251111/host_multi/few_shot_learning"
+  prefix: "fsl_tr_w3s5q10_te_w3s5q-1_e500b16_split70-10-20-itr0-pretrainedmodel-withupdate" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

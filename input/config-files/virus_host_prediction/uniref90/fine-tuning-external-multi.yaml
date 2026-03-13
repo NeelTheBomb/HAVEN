@@ -69,7 +69,7 @@ fine_tune_settings:
       active: True
       mode: "train" # supported values: train, test
       fine_tuned_model_path: ""
-      pre_trained_model_link: "Rostlab/prot_t5_xl_uniref50"
+      pre_trained_model_link: "Rostlab/prot_t5_base_mt_uniref50" # "Rostlab/prot_t5_xl_uniref50"
       hugging_face_cache_dir: "output/cache_dir"
       loss: "FocalLoss"
       n_mlp_layers: 2

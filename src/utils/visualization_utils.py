@@ -121,3 +121,18 @@ def wrap_ticklabels(ax, axis, label_width=10, break_long_words=False):
         ax.set_yticklabels(wrapped_labels, rotation=0)
     else:
         print(f"ERROR: Invalid axis = {axis}. Supported values = 'x', 'y'.")
+
+
+def get_p_value_annotation(p_value):
+    if 5e-2 < p_value <= 1:
+        return "ns"
+    elif 1e-2 < p_value <= 5e-2:
+        return "*"
+    elif 1e-3 < p_value <= 1e-2:
+        return "**"
+    elif 1e-4 < p_value <= 1e-3:
+        return "***"
+    elif p_value <= 1e-4:
+        return "****"
+    else:
+        return None

@@ -8,7 +8,7 @@
 *.zip
 *.tab
 **/input/data/**
-input
+input/*
 # output files
 output
 output/
@@ -44,3 +44,6 @@ output/
 
 # Archived files
 **/archive/**
+
+# include config files
+!input/config-files

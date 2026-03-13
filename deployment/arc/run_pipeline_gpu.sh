@@ -2,12 +2,12 @@
 
 #SBATCH -J haven
 #SBATCH --account=seqevol
-#SBATCH --partition=l40s_normal_q
+#SBATCH --partition=h200_normal_q
 
-#SBATCH --mem=450G
+#SBATCH --mem=300G
 #SBATCH --nodes=1
-#SBATCH --gres=gpu:2
-#SBATCH -t 144:00:00 # wall-time required (# 144hrs = 6 days)
+#SBATCH --gres=gpu:1
+#SBATCH -t 48:00:00 # wall-time required (# 144hrs = 6 days)
 
 
 # Load modules
@@ -27,7 +27,7 @@ conda info
 
 # Setup project and result directories
 PROJECT_DIR=$1
-LOGS_DIR=$PROJECT_DIR/output/logs/new_experiments
+LOGS_DIR=$PROJECT_DIR/output/logs
 echo "Project directory: $PROJECT_DIR"
 
 # Execute python script

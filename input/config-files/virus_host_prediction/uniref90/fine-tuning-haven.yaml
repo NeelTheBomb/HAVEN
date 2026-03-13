@@ -16,7 +16,7 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 16
+    batch_size: 32
     id_col: "uniref90_id"
     sequence_col: "seq"
     truncate: False
@@ -25,7 +25,7 @@ sequence_settings:
 
 pre_train_settings:
   model_name: "masked_language_modeling"
-  model_path: "output/raw/uniref90-viridae/pre-training/mlm/20240821/transformer_enc oder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
+  model_path: "output/raw/uniref90-viridae/pre-training/mlm/20240821/transformer_encoder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
   # model_path: "output/raw/uniref90-viridae/pre-training/mlm/20241010/checkpoints/transformer_encoder-l_6-h_8-lr1e-4_msl2048_b128_nosplitseq_mlm_vs30_cls_allemb_itr0_checkpt11.pth"
   encoder_settings:
     model_name: "transformer_encoder-l_6-h_8-lr1e-4-mlm"
@@ -36,8 +36,8 @@ pre_train_settings:
     max_seq_len: 256
 
 fine_tune_settings:
-  experiment: "virus_host_prediction"
-  n_iterations: 5
+  experiment: "virus_host_prediction_celoss"
+  n_iterations: 1
   split_input: True
   train_proportion: 0.8
   classification_type: "multi"
@@ -46,7 +46,7 @@ fine_tune_settings:
   training_settings:
     n_epochs_freeze: 20
     n_epochs_unfreeze: 30
-    max_lr: 3e-4
+    max_lr: 1e-4
     pct_start: 0.10
     div_factor: 25.0
     final_div_factor: 10000.0
@@ -89,7 +89,7 @@ fine_tune_settings:
       hidden_dim: 1024
       data_parallel: False
 
-    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr3e-4"
+    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-4"
       name: "HAVEN"
       active: True
       mode: "train" # supported values: train, test
@@ -108,5 +108,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20241117/host_multi/haven"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20251212/host_multi/haven"
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_celoss" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

@@ -34,7 +34,7 @@ few_shot_learn_settings:
   classification_type: "multi"
   n_epochs: 1
   batch_size: 16
-  max_lr: 1e-4
+  max_lr: 3e-5
   pct_start: 0.10
   div_factor: 25.0
   final_div_factor: 10000.0
@@ -73,11 +73,11 @@ few_shot_learn_settings:
     query_dataset_filepath: "input/data/uniref90/20240131/uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_idv.csv"
 
 pre_trained_models:
-  - id: "fsl-hybrid-attention_sl256st64vs30_ae_bn_fnn_2l_d1024_lr1e-4"
+  - id: "fsl-hybrid-attention_sl256st64vs30_ae_bn_fnn_2l_d1024_lr3e-5"
     name: HAVEN
     active: True
-    mode: "evaluate"
-    path: "output/raw/uniref90_embl_vertebrates_non_idv/20240928/host_multi/few_shot_learning/fsl_tr_w3s5q10_te_w3s5q-1_e100b32_split70-10-20_hybrid-attention_sl256st64vs30cls_fnn_2l_d1024_lr1e-4_itr4.pth"
+    mode: "test"
+    path: "output/raw/uniref90_embl_vertebrates_non_idv/20251111/host_multi/few_shot_learning/fsl_tr_w3s5q10_te_w3s5q-1_e500b16_split70-10-20-itr0-pretrainedmodel-withupdate_HAVEN_itr0.pth"
     model_settings:
       n_heads: 8
       n_mlp_layers: 2
@@ -96,5 +96,5 @@ pre_trained_models:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_idv_all_hosts/20241022/host_multi/few_shot_learning"
-  prefix: "fsl_test_walls5q-1_tsk1e1b16itr5_split70-10-20-gpu2" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref90_embl_vertebrates_idv_all_hosts/20241117/host_multi/few_shot_learning"
+  prefix: "fsl_test_w23s5q-1_tsk1e1b16_split70-10-20" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

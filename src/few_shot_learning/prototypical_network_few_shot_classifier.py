@@ -7,7 +7,7 @@ from models.protein_sequence_classification import ProteinSequenceClassification
 class PrototypicalNetworkFewShotClassifier(nn.Module):
     def __init__(self, pre_trained_model: ProteinSequenceClassification):
         super(PrototypicalNetworkFewShotClassifier, self).__init__()
-        self.pre_trained_model = nn.DataParallel(pre_trained_model)
+        self.pre_trained_model = pre_trained_model
 
     def forward(self, support_sequences, support_labels, query_sequences, batch_size):
         # compute prototypes for each label
@@ -74,7 +74,7 @@ class PrototypicalNetworkFewShotClassifier(nn.Module):
         # 2. use only the features from the first GPU for the mini_batch and ignore the embeddings from the remaining GPUs
 
         # 1 indicates not changing the size in that dimension
-        # i.e, number of times times for repitition = 1 (technically zero), so no repitition along the columns(second dimension)
+        # i.e, number of times for repitition = 1 (technically zero), so no repetition along the columns(second dimension)
         mini_batch = mini_batch.repeat(n_gpus, 1)
         query_features, _ = self.pre_trained_model(mini_batch, embedding_only=True)
         # return only the features for the mini_batch from the first GPU
