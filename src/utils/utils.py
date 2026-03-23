@@ -11,6 +11,7 @@ from sklearn.utils.class_weight import compute_class_weight
 import yaml
 from torch.nn.utils.rnn import pad_sequence
 import torch.nn as nn
+from Bio import SeqIO
 
 
 # functions related to labels, grouping, and label vocabulary
@@ -188,3 +189,15 @@ def pad_sequences(sequences, max_seq_length, pad_value):
         padded_sequences = nn.ConstantPad1d((0, max_seq_length - padded_seq_length), pad_value)(padded_sequences)
 
     return padded_sequences
+
+
+def convert_to_fasta(df, column_names, output_dir, output_filename):
+    tab_file_path = os.path.join(output_dir, f"{output_filename}.tab")
+    with open(tab_file_path, "wr") as f:
+        df[column_names].to_csv(f, sep="\t", index=False, header=False)
+
+    fasta_file_path = os.path.join(output_dir, f"{output_filename}.fasta")
+    records_count = SeqIO.convert(in_file=tab_file_path, in_format="tab",
+                  out_file=fasta_file_path, out_format="fasta")
+    print(f"Converted {records_count} records from csv to fasta")
+    return fasta_file_path

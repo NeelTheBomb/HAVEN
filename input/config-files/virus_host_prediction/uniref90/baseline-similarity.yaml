@@ -1,0 +1,49 @@
+config_type: "virus_host_prediction_baseline_similarity"
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "input/data/uniref90/20240131"
+
+  # Name of file(s) in subdirectory to be read and processed.
+  # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
+  file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_t0.01_c5_seq_len_in_99.9percentile.csv" ]
+  # seeds to split the files into training and testing
+  # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
+  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+
+
+classification_settings:
+  experiment: "virus_host_prediction_baseline_similarity"
+  n_iterations: 5
+  split_input: True
+  train_proportion: 0.8
+  type: "multi"
+  sequence_settings:
+    id_col: "uniref90_id"
+    sequence_col: "seq"
+  label_settings:
+    label_col: "virus_host_tax_id"
+    exclude_labels: [ "nan"]
+    label_groupings:
+      "Human": [ 9606 ]
+      "Chicken": [ 9031 ]
+      "Cat": [ 9685 ]
+      "Pig": [ 9823 ]
+      "Gray wolf": [ 9612 ]
+      "European rabbit": [ 9986 ]
+  models:
+    - name: "blast"
+      active: True
+      C: [0.01, 0.1, 1]
+      multiclass_type: "multinomial"
+      max_iter: 500
+
+
+output_settings:
+  output_dir: "output"
+  results_dir: "raw"
+  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20240131/host_multi/similarity"
+  prefix:  "blast" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
