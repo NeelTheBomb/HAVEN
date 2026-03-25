@@ -193,7 +193,7 @@ def pad_sequences(sequences, max_seq_length, pad_value):
 
 def convert_to_fasta(df, column_names, output_dir, output_filename):
     tab_file_path = os.path.join(output_dir, f"{output_filename}.tab")
-    with open(tab_file_path, "wr") as f:
+    with open(tab_file_path, "w+") as f:
         df[column_names].to_csv(f, sep="\t", index=False, header=False)
 
     fasta_file_path = os.path.join(output_dir, f"{output_filename}.fasta")

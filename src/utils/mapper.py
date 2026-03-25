@@ -31,7 +31,7 @@ pipeline_mapper = {
     "virus_host_prediction_external": fine_tuning_external_pipeline,
     "virus_host_prediction_baseline_deep_learning": baseline_deep_learning_pipeline,
     "virus_host_prediction_baseline_machine_learning": baseline_machine_learning_pipeline,
-    "virus_host_prediction_baseline_similarity": baseline_similarity_pipeline,
+    "virus_host_prediction_baseline_similarity": baseline_homology_pipeline,
     "virus_host_prediction_test": virus_host_prediction_testing_pipeline,
     "virus_host_prediction_test_external": virus_host_prediction_testing_external_pipeline,
     "few_shot_learning": few_shot_learning_host_prediction_pipeline,
