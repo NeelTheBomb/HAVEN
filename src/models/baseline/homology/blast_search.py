@@ -26,7 +26,7 @@ def run(train_df, test_df, blast_settings):
         blastdb_name = f"{seed}-train-{label}"
         train_fasta_filepath = utils.convert_to_fasta(train_df[train_df[label_col] == label], [id_col, sequence_col], output_dir, f"{seed}-train-{label}")
         # create a BLAST database of the training dataset
-        db_creation_output = subprocess.run(["makeblastdb", "-in", train_fasta_filepath, "-parse_seqids", "-dbtype", "prot", "-title", blastdb_name ], capture_output=True, shell=True)
+        db_creation_output = subprocess.run(["makeblastdb", "-in", train_fasta_filepath, "-parse_seqids", "-dbtype", "prot", "-title", blastdb_name ], capture_output=True)
         print(f"\n{db_creation_output}")
         #blastdbs.append(train_fasta_filepath)
 
@@ -38,7 +38,7 @@ def run(train_df, test_df, blast_settings):
                         "-outfmt", "10 qseqid sseqid pident evalue bitscore", # outfmt=10: Comma-separated values
                         "-max_target_seqs", "5",
                         "-num_threads", str(n_threads)],
-                       capture_output=True, shell=True)
+                       capture_output=True)
         print(blast_search_output)
         df = pd.read_csv(blast_results_filepath, names=[id_col, "target_seq_id", label, "evalue", "bitscore"]).drop_duplicates(subset=[id_col], keep="first")
         df[label] = df[label] / 100
