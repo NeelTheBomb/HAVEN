@@ -1,18 +1,26 @@
+import shutil
+from pathlib import Path
+
 from utils import utils
 import  subprocess
 import pandas as pd
 import os
+
 
 def run(train_df, test_df, blast_settings):
     id_col = blast_settings["id_col"]
     sequence_col = blast_settings["sequence_col"]
     label_col = blast_settings["label_col"]
     output_dir = os.path.join(blast_settings["output_dir"], "blast")
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
     seed = blast_settings["seed"]
+    n_threads = blast_settings["n_threads"]
 
     labels = train_df[label_col].unique().tolist()
     print(f"Unique labels: {labels}")
-    blastdbs = []
+    #blastdbs = []
+    test_fasta_filepath = utils.convert_to_fasta(test_df, [id_col, sequence_col], output_dir, f"{seed}-test")
+    result_df = pd.DataFrame(test_df[id_col])
     for label in labels:
         # 1. construct the database
         blastdb_name = f"{seed}-train-{label}"
@@ -20,15 +28,24 @@ def run(train_df, test_df, blast_settings):
         # create a BLAST database of the training dataset
         db_creation_output = subprocess.run(["makeblastdb", "-in", train_fasta_filepath, "-parse_seqids", "-dbtype", "prot", "-title", blastdb_name ], capture_output=True, shell=True)
         print(f"\n{db_creation_output}")
-        blastdbs.append(train_fasta_filepath)
+        #blastdbs.append(train_fasta_filepath)
 
-    test_fasta_filepath = utils.convert_to_fasta(test_df[:10], [id_col, sequence_col], output_dir, f"{seed}-test")
-    blast_results_filepath = os.path.join(output_dir, f"{seed}-blast-results.txt")
-    x  = subprocess.run(["blastp",
-                    "-db", train_fasta_filepath,
-                    "-query", test_fasta_filepath,
-                    "-out", blast_results_filepath,
-                    "-outfmt", "10 qseqid sseqid pident length mismatch gapopen evalue bitscore"],
-                   capture_output=True, shell=True) # outfmt=10: Comma-separated values
-    print(x)
-    print("BLAST search completed")
+        blast_results_filepath = os.path.join(output_dir, f"{seed}-blast-results-label{str(label)}.txt")
+        blast_search_output  = subprocess.run(["blastp",
+                        "-db", train_fasta_filepath,
+                        "-query", test_fasta_filepath,
+                        "-out", blast_results_filepath,
+                        "-outfmt", "10 qseqid sseqid pident evalue bitscore", # outfmt=10: Comma-separated values
+                        "-max_target_seqs", "5",
+                        "-num_threads", str(n_threads)],
+                       capture_output=True, shell=True)
+        print(blast_search_output)
+        df = pd.read_csv(blast_results_filepath, names=[id_col, "target_seq_id", label, "evalue", "bitscore"]).drop_duplicates(subset=[id_col], keep="first")
+        df[label] = df[label] / 100
+        result_df = result_df.join(df[[id_col, label]].set_index(id_col), on=id_col)
+    result_df.set_index(id_col, inplace=True)
+    result_df = result_df.div(result_df.sum(axis=1), axis=0) # normalize identity scores between 0 to 1.
+    result_df = test_df.join(result_df, on=id_col)
+    # clear all temporary BLAST files
+    shutil.rmtree(output_dir)
+    return result_df

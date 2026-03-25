@@ -86,6 +86,9 @@ def execute(config):
                 continue
 
             #  Create the result dataframe and remap the class indices to original input labels
+            result_df.rename(columns=index_label_map, inplace=True)
+            result_df["y_true"] = result_df[label_col]
+            result_df["y_true"] = result_df["y_true"].map(index_label_map)
             result_df["itr"] = iter
             results[model_name].append(result_df)
 
