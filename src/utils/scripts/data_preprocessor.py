@@ -39,6 +39,8 @@ def parse_args():
                         help="Get taxonomy metadata using the absolute path to the NCBI taxon directory provided in --taxon_dir.")
     parser.add_argument("--uprank_host_genus", action="store_true",
                         help="Uprank the taxonomy of virus hosts to 'genus' level.")
+    parser.add_argument("--uprank_virus_genus", action="store_true",
+                        help="Uprank the taxonomy of viruses to 'genus' level.")
     parser.add_argument("--taxon_kingdom", action="store_true",
                         help="Get kingdom taxonomy of virus hosts using the absolute path to the NCBI taxon directory provided in --taxon_dir.")
     parser.add_argument("--taxon_class", action="store_true",
@@ -107,6 +109,11 @@ def process(config):
         dataset_filter.uprank_virus_host_genus(input_file_path=input_file_path,
                                                taxon_metadata_dir_path=config.taxon_dir,
                                                output_file_path=upranked_dataset_file_path)
+    if config.uprank_virus_genus:
+        virus_genus_file_path = os.path.join(output_dir, Path(input_file_path).stem + "_virus_genus.csv")
+        dataset_filter.uprank_virus_genus(input_file_path=input_file_path,
+                                          taxon_metadata_dir_path=config.taxon_dir,
+                                          output_file_path=virus_genus_file_path)
 
     # For dataset analysis
     if config.taxon_kingdom:
