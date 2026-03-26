@@ -33,6 +33,7 @@ def execute(config):
 
     id_col = sequence_settings["id_col"]
     sequence_col = sequence_settings["sequence_col"]
+    virus_col = sequence_settings["virus_col"]
     label_col = label_settings["label_col"]
 
     # wandb_config = {
@@ -52,7 +53,7 @@ def execute(config):
         print(f"Iteration {iter}")
         # 1. Read the data files
         df = dataset_utils.read_dataset(input_dir, input_file_names,
-                                cols=[id_col, sequence_col, label_col])
+                                cols=[id_col, sequence_col, virus_col, label_col])
         # 2. Transform labels
         df, index_label_map = utils.transform_labels(df, label_settings,
                                                      classification_type=classification_type)
