@@ -57,7 +57,12 @@ def execute(config):
         df, index_label_map = utils.transform_labels(df, label_settings,
                                                      classification_type=classification_type)
         # 3. Split dataset
-        train_df, test_df = dataset_utils.split_dataset_stratified(df, input_split_seeds[iter],
+        if classification_settings["split_input_col"]:
+            train_df, test_df = dataset_utils.split_dataset_based_on_column(df, input_split_seeds[iter], classification_settings["train_proportion"],
+                                                                            split_input_col=classification_settings["split_input_col"],
+                                                                            label_col=label_col)
+        else:
+            train_df, test_df = dataset_utils.split_dataset_stratified(df, input_split_seeds[iter],
                                                                    classification_settings["train_proportion"], stratify_col=label_col)
 
 
