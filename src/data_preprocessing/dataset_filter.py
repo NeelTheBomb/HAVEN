@@ -463,7 +463,7 @@ def uprank_virus_genus(input_file_path, taxon_metadata_dir_path, output_file_pat
     if tax_id_genus_name_map:
         df[VIRUS_NAME_GENUS] = df[TAX_ID].apply(lambda x: tax_id_genus_name_map.get(x, None))
 
-    virus_names = df[VIRUS_NAME_GENUS].unique().to_list()
+    virus_names = df[VIRUS_NAME_GENUS].unique().tolist()
     print(f"Number of unique virus genera = {len(virus_names)}")
 
     df.to_csv(output_file_path, index=False)
