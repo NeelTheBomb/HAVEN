@@ -33,6 +33,7 @@ def execute(config):
 
     id_col = sequence_settings["id_col"]
     sequence_col = sequence_settings["sequence_col"]
+    virus_col = sequence_settings["virus_col"]
     label_col = label_settings["label_col"]
 
     # wandb_config = {
@@ -52,12 +53,17 @@ def execute(config):
         print(f"Iteration {iter}")
         # 1. Read the data files
         df = dataset_utils.read_dataset(input_dir, input_file_names,
-                                cols=[id_col, sequence_col, label_col])
+                                cols=[id_col, sequence_col, virus_col, label_col])
         # 2. Transform labels
         df, index_label_map = utils.transform_labels(df, label_settings,
                                                      classification_type=classification_type)
         # 3. Split dataset
-        train_df, test_df = dataset_utils.split_dataset_stratified(df, input_split_seeds[iter],
+        if classification_settings["split_input_col"]:
+            train_df, test_df = dataset_utils.split_dataset_based_on_column(df, input_split_seeds[iter], classification_settings["train_proportion"],
+                                                                            split_input_col=classification_settings["split_input_col"],
+                                                                            label_col=label_col)
+        else:
+            train_df, test_df = dataset_utils.split_dataset_stratified(df, input_split_seeds[iter],
                                                                    classification_settings["train_proportion"], stratify_col=label_col)
 
 

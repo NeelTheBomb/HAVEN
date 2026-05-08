@@ -25,6 +25,8 @@ NAME = "Name"
 RANK = "Rank"
 NCBI_TAX_ID = "TaxID"
 NCBI_Lineage = "Lineage"
+NCBI_Lineage_Name = "Lineage"
+NCBI_Lineage_ID = "LineageTaxIDs"
 TAXONKIT_DB = "TAXONKIT_DB"
 MAMMALIA = "Mammalia"
 AVES = "Aves"
@@ -197,6 +199,20 @@ def get_taxonomy_genus_data(tax_ids):
     print(genus_tax_name_map)
     return genus_tax_name_map
 
+
+# For given tax_ids at rank lower than genus, get the genus equivalent ranks
+# Input: tax ids at ranks lower than genus
+# Output: Map of tax_id to name at genus level
+def get_taxonomy_genus_mapping(tax_ids):
+    print(f"Number of tax ids = {len(tax_ids)}")
+    df_w_genus_data = pytaxonkit.lineage(tax_ids, formatstr="{genus}")
+    if df_w_genus_data is None:
+        return None, None
+    df_w_genus_data = df_w_genus_data[[NCBI_TAX_ID, NAME, NCBI_Lineage_Name, NCBI_Lineage_ID]]
+    tax_id_genus_name_map = df_w_genus_data.set_index(NCBI_TAX_ID)[NCBI_Lineage_Name].to_dict()
+    tax_id_genus_id_map = df_w_genus_data.set_index(NCBI_TAX_ID)[NCBI_Lineage_ID].to_dict()
+    print(f"Number of tax ids with genus equivalents = {len(tax_id_genus_name_map)}")
+    return tax_id_genus_name_map, tax_id_genus_id_map
 
 # Get taxids belonging to the class of mammals and aves
 # Input: list of tax_ids

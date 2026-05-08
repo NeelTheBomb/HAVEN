@@ -29,6 +29,7 @@ GENUS = "genus"
 
 # Column names at various stages of dataset curation
 TAX_ID = "tax_id"
+TAX_ID_GENUS = "tax_id_genus"
 SEQUENCE = "seq"
 HOST_TAX_IDS = "host_tax_ids"
 UNIPROT_HOST_TAX_IDS = "uniprot_host_tax_ids"
@@ -36,6 +37,7 @@ EMBL_REF_ID = "embl_ref_id"
 EMBL_HOST_NAME = "embl_host_name"
 HOST_COUNT = "host_count"
 VIRUS_NAME = "virus_name"
+VIRUS_NAME_GENUS = "virus_name_genus"
 VIRUS_TAXON_RANK = "virus_taxon_rank"
 VIRUS_HOST_TAX_ID = "virus_host_tax_id"
 VIRUS_HOST_NAME = "virus_host_name"
@@ -443,6 +445,30 @@ def uprank_virus_host_genus(input_file_path, taxon_metadata_dir_path, output_fil
     df.to_csv(output_file_path, index=False)
     print(f"Written to file {output_file_path}")
     print(f"END: Uprank virus host to 'genus' level taxonomy.")
+
+# If virus hosts rank is available and lower than genus, get the genus equivalent ranks
+def uprank_virus_genus(input_file_path, taxon_metadata_dir_path, output_file_path):
+    print(f"START: Uprank virus host to 'genus' level taxonomy.")
+    # Set TAXONKIT_DB environment variable
+    os.environ[TAXONKIT_DB] = taxon_metadata_dir_path
+
+    df = pd.read_csv(input_file_path)
+    print(f"Dataset size: {df.shape[0]}")
+
+    tax_ids = [int(x) for x in list(df[~df[TAX_ID].isna()][TAX_ID].unique())]
+    tax_id_genus_name_map, tax_id_genus_id_map = external_sources_utils.get_taxonomy_genus_mapping(tax_ids)
+    if tax_id_genus_id_map:
+        df[TAX_ID_GENUS] = df[TAX_ID].apply(lambda x: tax_id_genus_id_map.get(x, None))
+
+    if tax_id_genus_name_map:
+        df[VIRUS_NAME_GENUS] = df[TAX_ID].apply(lambda x: tax_id_genus_name_map.get(x, None))
+
+    virus_names = df[VIRUS_NAME_GENUS].unique().tolist()
+    print(f"Number of unique virus genera = {len(virus_names)}")
+
+    df.to_csv(output_file_path, index=False)
+    print(f"Written to file {output_file_path}")
+    print(f"END: Uprank virus to 'genus' level taxonomy.")
 
 
 # Dataset Analysis: Get the kingdom of virus_hosts

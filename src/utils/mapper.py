@@ -8,8 +8,8 @@ from models.haven.haven import HAVEN
 from models.haven.ablation.haven_wo_hierattn import HAVEN_wo_HierAttn
 
 from models.haven.ablation.bert_virus_host_prediction import BERT_VirusHostPrediction
-from models.external.prostt5_host_prediction import ProstT5_VirusHostPrediction
-from models.external.prott5_host_prediction import ProtT5_VirusHostPrediction
+#from models.external.prostt5_host_prediction import ProstT5_VirusHostPrediction
+#from models.external.prott5_host_prediction import ProtT5_VirusHostPrediction
 from models.external.esm2_host_prediction import ESM2_VirusHostPrediction
 #from models.external.esm3_host_prediction import ESM3_VirusHostPrediction
 
@@ -31,7 +31,7 @@ pipeline_mapper = {
     "virus_host_prediction_external": fine_tuning_external_pipeline,
     "virus_host_prediction_baseline_deep_learning": baseline_deep_learning_pipeline,
     "virus_host_prediction_baseline_machine_learning": baseline_machine_learning_pipeline,
-    "virus_host_prediction_baseline_similarity": baseline_homology_pipeline,
+    "virus_host_prediction_baseline_homology": baseline_homology_pipeline,
     "virus_host_prediction_test": virus_host_prediction_testing_pipeline,
     "virus_host_prediction_test_external": virus_host_prediction_testing_external_pipeline,
     "few_shot_learning": few_shot_learning_host_prediction_pipeline,
@@ -52,8 +52,8 @@ model_map = {
     "BERT": BERT_VirusHostPrediction,
     "HAVEN_wo_Hierarchical_Attention": HAVEN_wo_HierAttn,
     "HAVEN": HAVEN,
-    "ProstT5": ProstT5_VirusHostPrediction,
-    "ProtT5": ProtT5_VirusHostPrediction,  # IMP: note the difference between ProstT5 and ProtT5
+    #"ProstT5": ProstT5_VirusHostPrediction,
+   # "ProtT5": ProtT5_VirusHostPrediction,  # IMP: note the difference between ProstT5 and ProtT5
     "ESM2": ESM2_VirusHostPrediction,
 #    "ESM3": ESM3_VirusHostPrediction
 }
