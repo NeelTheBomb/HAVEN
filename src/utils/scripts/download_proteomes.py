@@ -4,7 +4,7 @@ import argparse
 import pandas as pd
 from pathlib import Path
 import subprocess
-
+import shutil
 
 
 def parse_args():
@@ -24,7 +24,8 @@ def download_proteome(id, output_dir):
     try:
         output_file_name = f"{id}.zip"
         subprocess.run(["datasets", "download", "virus", "genome", "accession", f"{id}.1", "--include", "protein", "--filename", output_file_name])
-        os.replace(output_file_name, os.path.join(output_dir, output_file_name))
+        #os.replace(output_file_name, os.path.join(output_dir, output_file_name))
+        shutil.move(output_file_name, os.path.join(output_dir, output_file_name))
 
     except Exception as e:
         print(f"Failed to download proteome {id}")
