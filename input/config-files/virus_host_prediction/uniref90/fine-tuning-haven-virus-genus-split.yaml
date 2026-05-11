@@ -110,5 +110,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260511/host_multi/virus_genus_split/haven"
+  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260511a/host_multi/virus_genus_split/haven"
   prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_virus_genus_split" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
