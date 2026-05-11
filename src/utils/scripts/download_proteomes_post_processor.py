@@ -32,6 +32,7 @@ def process_proteomes(input_file, id_col, proteome_dir, output_dir):
 
     proteome_not_present_count = 0
     for id in ids:
+        print("Processing", id)
         input_zipfile_name = f"{id}.zip"
         proteome_zip_file_path = os.path.join(proteome_dir, input_zipfile_name)
         if os.path.exists(proteome_zip_file_path):
