@@ -3,9 +3,10 @@ import os
 import argparse
 import pandas as pd
 from pathlib import Path
-import subprocess
 import shutil
 from zipfile import ZipFile
+from Bio import SeqIO
+import re
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Generate perturbed sequences for a given dataset')
@@ -17,6 +18,8 @@ def parse_args():
                         help="Absolute path to proteome directory.\n")
     parser.add_argument("-od", "--output_dir", required=True,
                         help="Absolute path to output directory.\n")
+    parser.add_argument("--fasta_to_csv", action="store_true",
+                        help="Convert the downloaded fasta files to csv format.\n")
 
     args = parser.parse_args()
     return args
@@ -54,9 +57,46 @@ def process_proteomes(input_file, id_col, proteome_dir, output_dir):
     print(f"Proteomes not present count: {proteome_not_present_count}")
     return
 
+def convert_fasta_to_csv(id, fasta_file_path):
+    proteins = []
+    with open(fasta_file_path, "r") as f:
+        for record in SeqIO.parse(f, "fasta"):
+            proteins.append({
+                "proteome_id": id,
+                "protein_id": record.id.split(":")[0],
+                "sequence": str(record.seq),
+                "protein": record.description.split(" [")[0][len(record.id)+1:]
+            })
+    return proteins
+
+def process_fasta_files(input_file, id_col, proteome_dir, output_dir):
+    df = pd.read_csv(input_file)
+    print(f"Dataset size: {df.shape}")
+    ids = list(df[id_col].unique())
+    print("Number of unique ids: ", len(ids))
+    no_proteome_count = 0
+    processed_proteome_count = 0
+    protein_sequences = []
+    for id in ids:
+        fasta_file_path = os.path.join(proteome_dir, f"{id}.faa")
+        if os.path.exists(fasta_file_path):
+            proteins = convert_fasta_to_csv(id, fasta_file_path)
+            print(f"{id}: {len(proteins)} proteins")
+            protein_sequences.extend(proteins)
+            processed_proteome_count += 1
+        else:
+            no_proteome_count += 1
+    print(f"processed_proteome_count: {processed_proteome_count}")
+    print(f"no_proteome_count: {no_proteome_count}")
+    print(f"Total number of sequences = {len(protein_sequences)}")
+    pd.DataFrame(protein_sequences).to_csv(os.path.join(output_dir, Path(input_file).stem + "_proteome_proteins.csv"), index=False)
+
 def main():
     config = parse_args()
-    process_proteomes(config.input_file, config.id_col,  config.proteome_dir, config.output_dir)
+    if config.fasta_to_csv:
+        process_fasta_files(config.input_file, config.id_col,  config.proteome_dir, config.output_dir)
+    else:
+        process_proteomes(config.input_file, config.id_col,  config.proteome_dir, config.output_dir)
     return
 
 
