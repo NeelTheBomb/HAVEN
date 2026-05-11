@@ -19,6 +19,7 @@ input_settings:
 sequence_settings:
     batch_size: 32
     id_col: "uniref90_id"
+    virus_col: "virus_name_genus"
     sequence_col: "seq"
     truncate: False
     split_sequence: False
@@ -101,7 +102,7 @@ fine_tune_settings:
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 5
+      n_classes: 4
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
