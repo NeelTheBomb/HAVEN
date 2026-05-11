@@ -33,19 +33,22 @@ def process_proteomes(input_file, id_col, proteome_dir, output_dir):
     proteome_not_present_count = 0
     for id in ids:
         print("Processing", id)
-        input_zipfile_name = f"{id}.zip"
-        proteome_zip_file_path = os.path.join(proteome_dir, input_zipfile_name)
-        if os.path.exists(proteome_zip_file_path):
-            id_dir = os.path.join(proteome_dir, id)
-            Path(os.path.dirname(id_dir)).mkdir(parents=True, exist_ok=True)
-            with ZipFile(proteome_zip_file_path, "r") as zip_object:
-                zip_object.extract("ncbi_dataset/data/protein.faa", path=id_dir)
+        try:
+            input_zipfile_name = f"{id}.zip"
+            proteome_zip_file_path = os.path.join(proteome_dir, input_zipfile_name)
+            if os.path.exists(proteome_zip_file_path):
+                id_dir = os.path.join(proteome_dir, id)
+                Path(os.path.dirname(id_dir)).mkdir(parents=True, exist_ok=True)
+                with ZipFile(proteome_zip_file_path, "r") as zip_object:
+                    zip_object.extract("ncbi_dataset/data/protein.faa", path=id_dir)
 
-            zip_object.close()
-            shutil.move(os.path.join(id_dir, "ncbi_dataset/data/protein.faa"), os.path.join(output_dir, f"{id}.faa"))
-            shutil.rmtree(id_dir)
-        else:
-            proteome_not_present_count += 1
+                zip_object.close()
+                shutil.move(os.path.join(id_dir, "ncbi_dataset/data/protein.faa"), os.path.join(output_dir, f"{id}.faa"))
+                shutil.rmtree(id_dir)
+            else:
+                proteome_not_present_count += 1
+        except Exception as e:
+            print(e)
 
 
     print(f"Proteomes not present count: {proteome_not_present_count}")
