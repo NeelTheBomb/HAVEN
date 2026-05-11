@@ -39,7 +39,7 @@ pre_train_settings:
 
 fine_tune_settings:
   experiment: "virus_host_prediction_virus-genus-split"
-  n_iterations: 5
+  n_iterations: 3
   split_input: True
   split_input_col: "virus_name_genus"
   train_proportion: 0.8

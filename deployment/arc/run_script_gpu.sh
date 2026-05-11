@@ -2,12 +2,12 @@
 
 #SBATCH -J haven
 #SBATCH --account=seqevol
-#SBATCH --partition=a100_normal_q
+#SBATCH --partition=h200_normal_q
 
-#SBATCH --mem=180G
+#SBATCH --mem=200G
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
-#SBATCH -t 6:00:00 # wall-time required (# 96hrs)
+#SBATCH -t 24:00:00 # wall-time required (# 96hrs)
 
 
 # Load modules
