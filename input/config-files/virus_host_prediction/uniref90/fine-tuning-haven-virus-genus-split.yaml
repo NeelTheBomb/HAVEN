@@ -1,0 +1,113 @@
+config_type: "virus_host_prediction"
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  input_dir: "input/data/uniref90/20240131"
+
+  # Name of file(s) in subdirectory to be read and processed.
+  # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
+  # file_names: [ "uniref90_final_msl1114.csv" ]
+  # file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_t0.01_c5_seq_len_in_99.9percentile.csv" ]
+  file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_virus_genus_species_virus_host_vertebrates_w_seq_non_idv_t0.01_c4_seq_len_in_99percentile.csv" ]
+  # seeds to split the files into training and testing
+  # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
+  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+
+sequence_settings:
+    batch_size: 32
+    id_col: "uniref90_id"
+    sequence_col: "seq"
+    truncate: False
+    split_sequence: False
+    feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
+
+pre_train_settings:
+  model_name: "masked_language_modeling"
+  model_path: "output/raw/uniref90-viridae/pre-training/mlm/20240821/transformer_encoder-l_6-h_8-lr1e-4_msl256_b512_splitseq_mlm_vs30cls_allemb_itr0.pth"
+  # model_path: "output/raw/uniref90-viridae/pre-training/mlm/20241010/checkpoints/transformer_encoder-l_6-h_8-lr1e-4_msl2048_b128_nosplitseq_mlm_vs30_cls_allemb_itr0_checkpt11.pth"
+  encoder_settings:
+    model_name: "transformer_encoder-l_6-h_8-lr1e-4-mlm"
+    n_heads: 8
+    depth: 6
+    input_dim: 512 # input embedding dimension
+    hidden_dim: 1024
+    max_seq_len: 256
+
+fine_tune_settings:
+  experiment: "virus_host_prediction_virus-genus-split"
+  n_iterations: 5
+  split_input: True
+  split_input_col: "virus_name_genus"
+  train_proportion: 0.8
+  classification_type: "multi"
+  save_model: True
+
+  training_settings:
+    n_epochs_freeze: 20
+    n_epochs_unfreeze: 30
+    max_lr: 1e-4
+    pct_start: 0.10
+    div_factor: 25.0
+    final_div_factor: 10000.0
+
+  label_settings:
+    label_col: "virus_host_tax_id"
+    exclude_labels: [ "nan"]
+    label_groupings:
+      "Human": [ 9606 ]
+      "Red junglefowl": [ 9031 ]
+      "Pig": [ 9823 ]
+      "Domestic cattle": [ 9913 ]
+
+  task_settings:
+    - id: "host_prediction_sequence_msl2048cls_bn_fnn_2l_d1024_lr1e-4"
+      name: "BERT"
+      active: False
+      mode: "train" # supported values: train, test
+      fine_tuned_model_path: ""
+      cls_token: True
+      loss: "FocalLoss"
+      n_mlp_layers: 2
+      n_classes: 5
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: False
+
+    - id: "host_prediction_segment_msl256s64cls_bn_fnn_2l_d1024_lr1e-4"
+      name: "HAVEN_wo_Hierarchical_Attention"
+      active: False
+      mode: "train" # supported values: train, test
+      fine_tuned_model_path: ""
+      cls_token: True
+      stride: 64
+      loss: "FocalLoss"
+      n_mlp_layers: 2
+      n_classes: 5
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: False
+
+    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-4"
+      name: "HAVEN"
+      active: True
+      mode: "train" # supported values: train, test
+      fine_tuned_model_path: ""
+      segment_len: 256
+      stride: 64
+      cls_token: True
+      n_heads: 8
+      loss: "FocalLoss"
+      n_mlp_layers: 2
+      n_classes: 5
+      input_dim: 512 # input embedding dimension
+      hidden_dim: 1024
+      data_parallel: False
+
+output_settings:
+  output_dir: "output"
+  results_dir: "raw"
+  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260511/host_multi/virus_genus_split/haven"
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_virus_genus_split" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
