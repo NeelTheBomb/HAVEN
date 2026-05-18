@@ -29,17 +29,17 @@ classification_settings:
     sequence_col: "sequence"
     virus_col: "virus_genus_tax_name"
   label_settings:
-    label_col: "virus_host_species_tax_name"
+    label_col: "virus_host_species_tax_id"
     exclude_labels: [ "nan"]
     label_groupings:
-      "Homo sapiens": [ "Homo sapiens" ]
-      "Gallus gallus": [ "Gallus gallus" ]
-      "Sus scrofa": [ "Sus scrofa" ]
-      "Bos taurus": [ "Bos taurus" ]
-      "Equus caballus": [ "Equus caballus" ]
-      "Rattus norvegicus": [ "Rattus norvegicus" ]
-      "Canis lupus": [ "Canis lupus" ]
-      "Boa constrictor": [ "Boa constrictor" ]
+      "Human": [ 9606 ]
+      "Chicken": [ 9031 ]
+      "Pig": [ 9823 ]
+      "Domestic cattle": [ 9913 ]
+      "Norway rat": [ 10116 ]
+      "Horse": [ 9796 ]
+      "Wolf": [ 9612 ]
+      "Boa": [ 8574 ]
 
   models:
     - name: "blast"
@@ -50,5 +50,5 @@ classification_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260512/host_multi/virus_genus_split/homology"
+  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260518/host_multi/virus_genus_split/homology"
   prefix:  "blast" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
