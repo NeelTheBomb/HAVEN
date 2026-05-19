@@ -25,7 +25,7 @@ classification_settings:
   train_proportion: 0.8
   type: "multi"
   sequence_settings:
-    id_col: "protein_id"
+    id_col: "protein_id_name"
     sequence_col: "sequence"
     virus_col: "virus_genus_tax_name"
   label_settings:

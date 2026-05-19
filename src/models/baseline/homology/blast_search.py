@@ -5,7 +5,7 @@ from utils import utils
 import  subprocess
 import pandas as pd
 import os
-
+from Bio import SeqIO
 
 def run(train_df, test_df, blast_settings):
     id_col = blast_settings["id_col"]
@@ -24,7 +24,7 @@ def run(train_df, test_df, blast_settings):
     for label in labels:
         # 1. construct the database
         blastdb_name = f"{seed}-train-{label}"
-        train_fasta_filepath = utils.convert_to_fasta(train_df[train_df[label_col] == label], [id_col, sequence_col], output_dir, f"{seed}-train-{label}")
+        train_fasta_filepath = custom_convert_to_fasta(train_df[train_df[label_col] == label], sequence_col, output_dir, f"{seed}-train-{label}")
         # create a BLAST database of the training dataset
         db_creation_output = subprocess.run(["makeblastdb", "-in", train_fasta_filepath, "-parse_seqids", "-dbtype", "prot", "-title", blastdb_name ], capture_output=True)
         print(f"\n{db_creation_output}")
@@ -49,3 +49,15 @@ def run(train_df, test_df, blast_settings):
     # clear all temporary BLAST files
     shutil.rmtree(output_dir)
     return result_df
+
+
+def custom_convert_to_fasta(df, seq_col, output_dir, output_filename):
+    tab_file_path = os.path.join(output_dir, f"{output_filename}.tab")
+    with open(tab_file_path, "w+") as f:
+        df[seq_col].reset_index().to_csv(f, sep="\t", index=False, header=False)
+
+    fasta_file_path = os.path.join(output_dir, f"{output_filename}.fasta")
+    records_count = SeqIO.convert(in_file=tab_file_path, in_format="tab",
+                  out_file=fasta_file_path, out_format="fasta")
+    print(f"Converted {records_count} records from csv to fasta")
+    return fasta_file_path
