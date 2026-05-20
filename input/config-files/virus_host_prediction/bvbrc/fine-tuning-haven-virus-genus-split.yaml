@@ -5,22 +5,22 @@ config_type: "virus_host_prediction"
   ## provide path to dataset folder
 input_settings:
   # Base input directory
-  input_dir: "input/data/uniref90/20240131"
+  input_dir: "input/data/bvbrc"
 
   # Name of file(s) in subdirectory to be read and processed.
   # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
   # file_names: [ "uniref90_final_msl1114.csv" ]
   # file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_t0.01_c5_seq_len_in_99.9percentile.csv" ]
-  file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_virus_genus_species_virus_host_vertebrates_w_seq_non_idv_t0.01_c4_seq_len_in_99percentile.csv" ]
+  file_names: [ "BVBRC_reference_genome_20260429_proteome_proteins_host_prevalence_gte_onepercent.csv" ]
   # seeds to split the files into training and testing
   # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 32
-    id_col: "uniref90_id"
-    virus_col: "virus_name_genus"
-    sequence_col: "seq"
+    batch_size: 16
+    id_col: "protein_id_name"
+    virus_col: "virus_genus_tax_name"
+    sequence_col: "sequence"
     truncate: False
     split_sequence: False
     feature_type: "token"  # supported values 'kmer', 'cgr', 'token'
@@ -39,29 +39,33 @@ pre_train_settings:
 
 fine_tune_settings:
   experiment: "virus_host_prediction_virus-genus-split"
-  n_iterations: 3
+  n_iterations: 1
   split_input: True
-  split_input_col: "virus_name_genus"
+  split_input_col: "virus_genus_tax_name"
   train_proportion: 0.8
   classification_type: "multi"
   save_model: True
 
   training_settings:
-    n_epochs_freeze: 20
-    n_epochs_unfreeze: 30
+    n_epochs_freeze: 1
+    n_epochs_unfreeze: 1
     max_lr: 1e-4
     pct_start: 0.10
     div_factor: 25.0
     final_div_factor: 10000.0
 
   label_settings:
-    label_col: "virus_host_tax_id"
+    label_col: "virus_host_species_tax_id"
     exclude_labels: [ "nan"]
     label_groupings:
       "Human": [ 9606 ]
-      "Red junglefowl": [ 9031 ]
+      "Chicken": [ 9031 ]
       "Pig": [ 9823 ]
       "Domestic cattle": [ 9913 ]
+      "Norway rat": [ 10116 ]
+      "Horse": [ 9796 ]
+      "Wolf": [ 9612 ]
+      "Boa": [ 8574 ]
 
   task_settings:
     - id: "host_prediction_sequence_msl2048cls_bn_fnn_2l_d1024_lr1e-4"
@@ -102,7 +106,7 @@ fine_tune_settings:
       n_heads: 8
       loss: "FocalLoss"
       n_mlp_layers: 2
-      n_classes: 4
+      n_classes: 8
       input_dim: 512 # input embedding dimension
       hidden_dim: 1024
       data_parallel: False
@@ -110,5 +114,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260511a/host_multi/virus_genus_split/haven"
+  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260518/host_multi/virus_genus_split/homology"
   prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_virus_genus_split" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

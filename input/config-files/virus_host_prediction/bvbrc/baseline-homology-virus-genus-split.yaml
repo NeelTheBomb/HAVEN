@@ -46,7 +46,6 @@ classification_settings:
       active: True
       n_threads: 4
 
-
 output_settings:
   output_dir: "output"
   results_dir: "raw"
