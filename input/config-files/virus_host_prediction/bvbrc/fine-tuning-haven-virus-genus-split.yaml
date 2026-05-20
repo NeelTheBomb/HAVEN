@@ -17,7 +17,7 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 16
+    batch_size: 8
     id_col: "protein_id_name"
     virus_col: "virus_genus_tax_name"
     sequence_col: "sequence"
@@ -39,7 +39,7 @@ pre_train_settings:
 
 fine_tune_settings:
   experiment: "virus_host_prediction_virus-genus-split"
-  n_iterations: 1
+  n_iterations: 5
   split_input: True
   split_input_col: "virus_genus_tax_name"
   train_proportion: 0.8
@@ -114,5 +114,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260518/host_multi/virus_genus_split/homology"
+  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260518/host_multi/virus_genus_split/haven"
   prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_virus_genus_split" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

@@ -204,7 +204,7 @@ def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loade
     for e in range(n_epochs_freeze):
         model = training_utils.run_epoch(model, train_dataset_loader, val_dataset_loader, criterion, optimizer,
                                          lr_scheduler, early_stopper, task_id, e)
-        print(f"Finished epoch: {e + 1}")
+
         # check if early stopping condition was satisfied and stop accordingly
         if early_stopper.early_stop:
             print("Breaking off frozen training loop due to early stop")
