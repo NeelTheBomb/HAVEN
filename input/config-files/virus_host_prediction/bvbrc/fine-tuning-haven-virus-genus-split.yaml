@@ -17,7 +17,7 @@ input_settings:
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
-    batch_size: 32
+    batch_size: 16
     id_col: "protein_id_name"
     virus_col: "virus_genus_tax_name"
     sequence_col: "sequence"

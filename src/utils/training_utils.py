@@ -14,6 +14,7 @@ from utils import nn_utils
 def run_epoch(model, train_dataset_loader, val_dataset_loader, criterion,
               optimizer, lr_scheduler, early_stopper, model_id, epoch):
     # training
+    print(f"Running epoch {epoch + 1}")
     model.train()
     for _, record in enumerate(pbar := tqdm.tqdm(train_dataset_loader)):
         input, label = record
@@ -38,6 +39,8 @@ def run_epoch(model, train_dataset_loader, val_dataset_loader, criterion,
         })
         pbar.set_description(
             f"{model_id}/training-loss = {float(train_loss)}, model.n_iter={model.train_iter}, epoch={epoch + 1}")
+        if (_ == 5):
+            break
 
     # validation
     val_loss = validate_model(model, val_dataset_loader, criterion, model_id, epoch)
