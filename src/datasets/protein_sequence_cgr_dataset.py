@@ -1,10 +1,10 @@
 from torch.utils.data import Dataset
 from utils import utils, nn_utils
 from PIL import Image
-from torchvision import transforms
-
-import numpy as np
 import torch
+from torchvision import transforms
+torch.hub.list('pytorch/vision', force_reload=True)
+import numpy as np
 import os
 
 

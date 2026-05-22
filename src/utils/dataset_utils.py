@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 import pandas as pd
 import os
 import torch
+import numpy as np
 
 from utils import utils, kmer_utils, constants, mapper
 from datasets.collations.padding import Padding, PaddingUnlabeled
@@ -53,6 +54,32 @@ def split_dataset_stratified(df, seed, train_proportion, stratify_col=None):
     train_df, test_df = train_test_split(df, train_size=train_proportion, random_state=seed, stratify=df[stratify_col])
     print(f"Size of train_dataset = {train_df.shape}")
     print(f"Size of test_dataset = {test_df.shape}")
+    return train_df, test_df
+
+def split_dataset_based_on_column(df, seed, train_proportion, split_input_col=None, label_col=None):
+    print(f"Splitting dataset with seed={seed}, train_proportion={train_proportion}, split_input_col={split_input_col}, label_col={label_col}")
+    col_values = df[split_input_col].unique().tolist()
+    n_col_values = len(col_values)
+    print(f"Number of unique values of {split_input_col}={n_col_values}")
+
+    n_train_col_values = int(train_proportion * n_col_values)
+    n_test_col_values = n_col_values - n_train_col_values
+
+    print(f"Expected number of train {split_input_col} values = {n_train_col_values}")
+    print(f"Expected number of test {split_input_col} values = {n_test_col_values}")
+
+    np.random.seed(seed)
+    train_col_values = np.random.choice(col_values, size=n_train_col_values, replace=False)
+    test_col_values = list(set(col_values) - set(train_col_values))
+
+    print(f"Number of train {split_input_col} values = {len(train_col_values)}")
+    print(f"Number of test {split_input_col} values = {len(test_col_values)}")
+
+    train_df = df[df[split_input_col].isin(train_col_values)]
+    test_df = df[df[split_input_col].isin(test_col_values)]
+
+    print(f"Size of train_dataset = {train_df.shape}; number of unique labels = {train_df[label_col].nunique()}")
+    print(f"Size of test_dataset = {test_df.shape}; number of unique labels = {test_df[label_col].nunique()}")
     return train_df, test_df
 
 
