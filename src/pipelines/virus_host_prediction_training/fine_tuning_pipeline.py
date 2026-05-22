@@ -57,6 +57,8 @@ def execute(config):
     fine_tune_model_filepath = os.path.join(output_dir, results_dir, sub_dir, "{output_prefix}_{task_id}_itr{itr}.pth")
     Path(os.path.dirname(fine_tune_model_filepath)).mkdir(parents=True, exist_ok=True)
 
+    output_results_dir = os.path.join(output_dir, results_dir, sub_dir)
+
     for iter in range(n_iters):
         print(f"Iteration {iter}")
         # 1. Read the data files
@@ -157,7 +159,8 @@ def execute(config):
             result_df.rename(columns=index_label_map, inplace=True)
             result_df["y_true"] = result_df["y_true"].map(index_label_map)
             result_df["itr"] = iter
-            results[task_id].append(result_df)
+            # write the raw results in csv files
+            utils.write_output({task_id: [result_df]}, output_results_dir, output_prefix, f"output_itr{iter}")
 
             if fine_tune_settings["save_model"]:
                 # save the fine_tuned model_params
@@ -166,10 +169,6 @@ def execute(config):
                 print(f"Model output written to {model_filepath}")
 
             wandb.finish()
-
-    # write the raw results in csv files
-    output_results_dir = os.path.join(output_dir, results_dir, sub_dir)
-    utils.write_output(results, output_results_dir, output_prefix, "output")
 
 
 def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loader, loss, training_settings, id_col, task_id):
