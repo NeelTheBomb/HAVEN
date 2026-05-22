@@ -62,8 +62,8 @@ fine_tune_settings:
       "Chicken": [ 9031 ]
       "Pig": [ 9823 ]
       "Domestic cattle": [ 9913 ]
-      "Norway rat": [ 10116 ]
       "Horse": [ 9796 ]
+      "Norway rat": [ 10116 ]
       "Wolf": [ 9612 ]
       "Boa": [ 8574 ]
 
