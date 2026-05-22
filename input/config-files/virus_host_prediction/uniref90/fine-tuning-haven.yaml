@@ -37,16 +37,16 @@ pre_train_settings:
 
 fine_tune_settings:
   experiment: "virus_host_prediction_celoss"
-  n_iterations: 1
+  n_iterations: 5
   split_input: True
   train_proportion: 0.8
   classification_type: "multi"
   save_model: True
 
   training_settings:
-    n_epochs_freeze: 20
-    n_epochs_unfreeze: 30
-    max_lr: 1e-4
+    n_epochs_freeze: 50
+    n_epochs_unfreeze: 0
+    max_lr: 1e-5
     pct_start: 0.10
     div_factor: 25.0
     final_div_factor: 10000.0
