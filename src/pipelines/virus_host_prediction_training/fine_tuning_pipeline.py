@@ -48,6 +48,7 @@ def execute(config):
         "n_epochs_freeze": training_settings["n_epochs_freeze"],
         "n_epochs_unfreeze": training_settings["n_epochs_unfreeze"],
         "lr": training_settings["max_lr"],
+        "weight_decay": training_settings["weight_decay"],
         "max_sequence_length": sequence_settings["max_sequence_length"],
         "dataset": input_file_names[0],
         "output_prefix": output_prefix
@@ -174,7 +175,7 @@ def execute(config):
 def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loader, loss, training_settings, id_col, task_id):
     class_weights = utils.get_class_weights(train_dataset_loader).to(nn_utils.get_device())
     criterion = nn_utils.get_criterion(loss, class_weights)
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-4)
+    optimizer = torch.optim.Adam(model.parameters(), lr=float(training_settings["max_lr"]), weight_decay=float(training_settings["weight_decay"]))
     n_epochs_freeze = training_settings["n_epochs_freeze"]
     n_epochs_unfreeze = training_settings["n_epochs_unfreeze"]
     lr_scheduler = OneCycleLR(
@@ -186,7 +187,7 @@ def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loade
         anneal_strategy='cos',
         div_factor=training_settings["div_factor"],
         final_div_factor=training_settings["final_div_factor"])
-    early_stopper = EarlyStopping(patience=3, min_delta=0)
+    early_stopper = EarlyStopping(patience=10, min_delta=0)
     model.train_iter = 0
     model.val_iter = 0
 

@@ -38,8 +38,8 @@ pre_train_settings:
     max_seq_len: 256
 
 fine_tune_settings:
-  experiment: "virus_host_prediction_virus-genus-split"
-  n_iterations: 5
+  experiment: "virus_host_prediction_virus-genus-split-lr-hyperparam"
+  n_iterations: 1
   split_input: True
   split_input_col: "virus_genus_tax_name"
   train_proportion: 0.8
@@ -50,6 +50,7 @@ fine_tune_settings:
     n_epochs_freeze: 20
     n_epochs_unfreeze: 30
     max_lr: 1e-5
+    weight_decay: 1e-2
     pct_start: 0.10
     div_factor: 25.0
     final_div_factor: 10000.0
@@ -95,7 +96,7 @@ fine_tune_settings:
       hidden_dim: 1024
       data_parallel: False
 
-    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5"
+    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-5wd1e-2"
       name: "HAVEN"
       active: True
       mode: "train" # supported values: train, test
@@ -114,5 +115,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260522/host_multi/virus_genus_split/haven"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_virus_genus_split" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260525a/host_multi/virus_genus_split/haven"
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
