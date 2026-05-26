@@ -176,8 +176,11 @@ def run_task(model, train_dataset_loader, val_dataset_loader, test_dataset_loade
     class_weights = utils.get_class_weights(train_dataset_loader).to(nn_utils.get_device())
     criterion = nn_utils.get_criterion(loss, class_weights)
     # optimizer = torch.optim.Adam(model.parameters(), lr=float(training_settings["max_lr"]), weight_decay=float(training_settings["weight_decay"]))
-    optimizer = torch.optim.AdamW(model.parameters(), lr=float(training_settings["max_lr"]),
-                                 weight_decay=float(training_settings["weight_decay"]))
+    # optimizer = torch.optim.AdamW(model.parameters(), lr=float(training_settings["max_lr"]),
+    #                              weight_decay=float(training_settings["weight_decay"]))
+    optimizer = torch.optim.SGD(model.parameters(), lr=float(training_settings["max_lr"]),
+                                  weight_decay=float(training_settings["weight_decay"]))
+
     n_epochs_freeze = training_settings["n_epochs_freeze"]
     n_epochs_unfreeze = training_settings["n_epochs_unfreeze"]
     lr_scheduler = OneCycleLR(
