@@ -14,7 +14,7 @@ input_settings:
   file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_virus_genus_species_virus_host_vertebrates_w_seq_non_idv_t0.01_c4_seq_len_in_99percentile.csv" ]
   # seeds to split the files into training and testing
   # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
-  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+  split_seeds: [ 12612648 ] # [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
 
 sequence_settings:
     batch_size: 16
@@ -39,7 +39,7 @@ pre_train_settings:
 
 fine_tune_settings:
   experiment: "virus_host_prediction_virus-genus-split"
-  n_iterations: 3
+  n_iterations: 1
   split_input: True
   split_input_col: "virus_name_genus"
   train_proportion: 0.8
@@ -50,6 +50,7 @@ fine_tune_settings:
     n_epochs_freeze: 20
     n_epochs_unfreeze: 30
     max_lr: 1e-4
+    weight_decay: 1e-4
     pct_start: 0.10
     div_factor: 25.0
     final_div_factor: 10000.0
@@ -91,7 +92,7 @@ fine_tune_settings:
       hidden_dim: 1024
       data_parallel: False
 
-    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-4"
+    - id: "hybrid_attention_msl256s64ae_bn_cls_fnn_2l_d1024_lr1e-4wd1e-4"
       name: "HAVEN"
       active: True
       mode: "train" # supported values: train, test
@@ -110,5 +111,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260519/host_multi/virus_genus_split/haven"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_virus_genus_split" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260526a/host_multi/virus_genus_split/haven"
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_itr0" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
