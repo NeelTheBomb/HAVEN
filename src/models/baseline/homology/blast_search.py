@@ -21,6 +21,7 @@ def run(train_df, test_df, blast_settings):
     #blastdbs = []
     test_fasta_filepath = utils.convert_to_fasta(test_df, [id_col, sequence_col], output_dir, f"{seed}-test")
     result_df = pd.DataFrame(test_df[id_col])
+    similarity_scores_dfs = []
     for label in labels:
         # 1. construct the database
         blastdb_name = f"{seed}-train-{label}"
@@ -40,15 +41,21 @@ def run(train_df, test_df, blast_settings):
                         "-num_threads", str(n_threads)],
                        capture_output=True)
         print(blast_search_output)
-        df = pd.read_csv(blast_results_filepath, names=[id_col, "target_seq_id", label, "evalue", "bitscore"]).drop_duplicates(subset=[id_col], keep="first")
+        df = pd.read_csv(blast_results_filepath, names=[id_col, "target_seq_id", label, "evalue", "bitscore"])
         df[label] = df[label] / 100
+        similarity_scores_df = df[[id_col, "target_seq_id", label]]
+        similarity_scores_df.rename(columns={label: "similarity_score"}, inplace=True)
+        similarity_scores_df["target_label"] = label
+        similarity_scores_df.join(test_df[[id_col, label_col]].set_index(id_col), on=id_col)
+        similarity_scores_dfs.append(similarity_scores_df)
+        df.drop_duplicates(subset=[id_col], keep="first", inplace=True)
         result_df = result_df.join(df[[id_col, label]].set_index(id_col), on=id_col)
     result_df.set_index(id_col, inplace=True)
     result_df = result_df.div(result_df.sum(axis=1), axis=0) # normalize identity scores between 0 to 1.
     result_df = test_df.join(result_df, on=id_col)
     # clear all temporary BLAST files
     shutil.rmtree(output_dir)
-    return result_df
+    return result_df, pd.concat(similarity_scores_dfs)
 
 
 def custom_convert_to_fasta(df, seq_col, output_dir, output_filename):
