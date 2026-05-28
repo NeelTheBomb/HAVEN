@@ -1,0 +1,53 @@
+config_type: "virus_host_prediction_baseline_homology"
+
+# Input Settings:
+  ## initialize base input folder name
+  ## provide path to dataset folder
+input_settings:
+  # Base input directory
+  #input_dir: "input/data/uniref90_viruses"
+  input_dir: "input/data/bvbrc"
+
+  # Name of file(s) in subdirectory to be read and processed.
+  # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
+  #file_names: [ "uniref90_viridae_valid_embl_hosts_metadata_species_vertebrates_non_idv_prevalence_gte_1percent_seqlen_in_99.9percentile_w_seq.csv" ]
+  file_names: [ "BVBRC_reference_genome_20260429_proteome_proteins_host_family_c8.csv" ]
+  # seeds to split the files into training and testing
+  # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
+  split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
+
+
+classification_settings:
+  experiment: "virus_host_prediction_baseline_homology"
+  n_iterations: 1
+  split_input: True
+  split_input_col: "virus_genus_tax_name"
+  train_proportion: 0.8
+  type: "multi"
+  sequence_settings:
+    id_col: "protein_id_name"
+    sequence_col: "sequence"
+    virus_col: "virus_genus_tax_name"
+  label_settings:
+    label_col: "virus_host_family_tax_id"
+    exclude_labels: [ "nan" ]
+    label_groupings:
+      "Hominidae": [ 9604 ]
+      "Cercopithecidae": [ 9527 ]
+      "Suidae": [ 9821 ]
+      "Bovidae": [ 9895 ]
+      "Phasianidae": [ 9005 ]
+      "Muridae": [ 10066 ]
+      "Cricetidae": [ 337677 ]
+      "Pteropodidae": [ 9398 ]
+
+  models:
+    - name: "blast"
+      active: True
+      n_threads: 4
+
+output_settings:
+  output_dir: "output"
+  results_dir: "raw"
+  sub_dir: "bvbrc_virus_genus_host_family_vertebrates_c8/20260528a/host_multi/virus_genus_split/homology"
+  prefix:  "blast" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
