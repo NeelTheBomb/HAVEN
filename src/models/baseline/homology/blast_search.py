@@ -46,7 +46,7 @@ def run(train_df, test_df, blast_settings):
         similarity_scores_df = df[[id_col, "target_seq_id", label]]
         similarity_scores_df.rename(columns={label: "similarity_score"}, inplace=True)
         similarity_scores_df["target_label"] = label
-        similarity_scores_df.join(test_df[[id_col, label_col]].set_index(id_col), on=id_col)
+        similarity_scores_df = similarity_scores_df.join(test_df[[id_col, label_col]].set_index(id_col), on=id_col)
         similarity_scores_dfs.append(similarity_scores_df)
         df.drop_duplicates(subset=[id_col], keep="first", inplace=True)
         result_df = result_df.join(df[[id_col, label]].set_index(id_col), on=id_col)
