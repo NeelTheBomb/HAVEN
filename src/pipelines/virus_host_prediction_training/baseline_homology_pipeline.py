@@ -101,6 +101,7 @@ def execute(config):
 
             similarity_scores_df["itr"] = iter
             similarity_scores_df["target_label"] = similarity_scores_df["target_label"].map(index_label_map)
+            similarity_scores_df[label_col] = similarity_scores_df[label_col].map(index_label_map)
             similarity_scores[model_name].append(similarity_scores_df)
     # write the raw results in csv files
     utils.write_output(results, output_results_dir, output_filename_prefix, "output")
