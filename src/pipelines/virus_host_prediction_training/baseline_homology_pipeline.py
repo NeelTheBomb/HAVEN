@@ -76,6 +76,7 @@ def execute(config):
             if model_name not in results:
                 # first iteration
                 results[model_name] = []
+                similarity_scores[model_name] = []
 
 
             # Set necessary values within model_params object for cleaner code and to avoid passing multiple arguments.
