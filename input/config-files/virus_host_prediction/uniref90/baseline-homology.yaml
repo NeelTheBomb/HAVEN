@@ -27,6 +27,7 @@ classification_settings:
   sequence_settings:
     id_col: "uniref90_id"
     sequence_col: "seq"
+    virus_col: "virus_name_genus"
   label_settings:
     label_col: "virus_host_tax_id"
     exclude_labels: [ "nan"]
