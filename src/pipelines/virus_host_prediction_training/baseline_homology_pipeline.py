@@ -104,4 +104,4 @@ def execute(config):
             similarity_scores[model_name].append(similarity_scores_df)
     # write the raw results in csv files
     utils.write_output(results, output_results_dir, output_filename_prefix, "output")
-    utils.write_output(results, output_results_dir, output_filename_prefix, "similarity_scores")
+    utils.write_output(similarity_scores, output_results_dir, output_filename_prefix, "similarity_scores")
