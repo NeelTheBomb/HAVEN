@@ -47,8 +47,8 @@ def execute(config):
     # create output_results_dir path, if it does not already exist
     Path(output_results_dir).mkdir(parents=True, exist_ok=True)
     results = {}
-    feature_importance = {}
-    validation_scores = {}
+    similarity_scores = {}
+
     for iter in range(n_iters):
         print(f"Iteration {iter}")
         # 1. Read the data files
@@ -87,7 +87,7 @@ def execute(config):
 
             if "blast" in model_name:
                 print("Executing Homology-based classification using BLAST ...")
-                result_df = blast_search.run(train_df, test_df, model)
+                result_df, similarity_scores_df = blast_search.run(train_df, test_df, model)
             else:
                 continue
 
@@ -98,5 +98,9 @@ def execute(config):
             result_df["itr"] = iter
             results[model_name].append(result_df)
 
+            similarity_scores_df["itr"] = iter
+            similarity_scores_df["target_label"] = similarity_scores_df["target_label"].map(index_label_map)
+            similarity_scores[model_name].append(similarity_scores_df)
     # write the raw results in csv files
     utils.write_output(results, output_results_dir, output_filename_prefix, "output")
+    utils.write_output(results, output_results_dir, output_filename_prefix, "similarity_scores")
