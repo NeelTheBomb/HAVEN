@@ -11,7 +11,7 @@ input_settings:
   # Example: file_names: ["file_1.csv", "file_2.csv", "file_3.csv"]
   # file_names: [ "uniref90_final_msl1114.csv" ]
   # file_names: [ "uniref90_viridae_embl_hosts_pruned_metadata_species_vertebrates_w_seq_non_idv_t0.01_c5_seq_len_in_99.9percentile.csv" ]
-  file_names: [ "BVBRC_reference_genome_20260429_proteome_proteins_host_prevalence_gte_onepercent.csv" ]
+  file_names: [ "BVBRC_reference_genome_20260429_proteome_proteins_host_order_c8.csv" ]
   # seeds to split the files into training and testing
   # if provided, the number of seeds must match the number of iterations configured in classification_settings (n_iterations)
   split_seeds: [ 12612648, 31062180, 48918293, 55631155, 79221635 ] # [ 12612648, 31062180, 48918293, 55631155, 79221635 ]
@@ -38,7 +38,7 @@ pre_train_settings:
     max_seq_len: 256
 
 fine_tune_settings:
-  experiment: "virus_host_prediction_virus-genus-split-sgd-optimizer"
+  experiment: "virus_host_prediction_virus-genus-split-host-order"
   n_iterations: 1
   split_input: True
   split_input_col: "virus_genus_tax_name"
@@ -56,17 +56,17 @@ fine_tune_settings:
     final_div_factor: 10000.0
 
   label_settings:
-    label_col: "virus_host_species_tax_id"
+    label_col: "virus_host_order_tax_id"
     exclude_labels: [ "nan"]
     label_groupings:
-      "Human": [ 9606 ]
-      "Chicken": [ 9031 ]
-      "Pig": [ 9823 ]
-      "Domestic cattle": [ 9913 ]
-      "Horse": [ 9796 ]
-      "Norway rat": [ 10116 ]
-      "Wolf": [ 9612 ]
-      "Boa": [ 8574 ]
+      "Primates": [ 9443 ]
+      "Artiodactyla": [ 91561 ]
+      "Chiroptera": [ 9397 ]
+      "Rodentia": [ 9989 ]
+      "Carnivora": [ 33554 ]
+      "Galliformes": [ 8976 ]
+      "Squamata": [ 8509 ]
+      "Passeriformes": [ 9126 ]
 
   task_settings:
     - id: "host_prediction_sequence_msl2048cls_bn_fnn_2l_d1024_lr1e-4"
@@ -115,5 +115,5 @@ fine_tune_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260526c/host_multi/virus_genus_split/haven"
-  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30_sgd" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
+  sub_dir: "bvbrc_virus_genus_host_order_vertebrates_c8/20260528a/host_multi/virus_genus_split/haven"
+  prefix: "mlm_tfenc_l6_h8_lr1e-4_uniref90viridae_vs30" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

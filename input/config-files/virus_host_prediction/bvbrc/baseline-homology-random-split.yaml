@@ -21,7 +21,7 @@ classification_settings:
   experiment: "virus_host_prediction_baseline_homology"
   n_iterations: 1
   split_input: True
-  split_input_col: "virus_genus_tax_name"
+  split_input_col: "protein_id_name"
   train_proportion: 0.8
   type: "multi"
   sequence_settings:
@@ -49,5 +49,5 @@ classification_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260528/host_multi/virus_genus_split/homology"
+  sub_dir: "bvbrc_virus_genus_host_species_vertebrates_t0.01_c8/20260528/host_multi/random_split/homology"
   prefix:  "blast" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv

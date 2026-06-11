@@ -19,13 +19,15 @@ input_settings:
 
 classification_settings:
   experiment: "virus_host_prediction_baseline_homology"
-  n_iterations: 5
+  n_iterations: 1
   split_input: True
+  split_input_col: "uniref90_id"
   train_proportion: 0.8
   type: "multi"
   sequence_settings:
     id_col: "uniref90_id"
     sequence_col: "seq"
+    virus_col: "virus_name"
   label_settings:
     label_col: "virus_host_tax_id"
     exclude_labels: [ "nan"]
@@ -44,5 +46,5 @@ classification_settings:
 output_settings:
   output_dir: "output"
   results_dir: "raw"
-  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260324/host_multi/homology"
+  sub_dir: "uniref90_embl_vertebrates_non_idv_t0.01_c5_seq_len_in_99.9percentile/20260528/host_multi/random_split/homology"
   prefix:  "blast" # default: none; default file name = kmer_k<k>_lr_c<c>_<label>_<type>_tr<train_proportion>_n<n_iterations>_<output_prefix>_output.csv
