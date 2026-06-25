@@ -88,12 +88,10 @@ class ProteinSequenceLucaVirusDataset(ProteinSequenceDatasetWithID):
         sequence = record[self.sequence_col]
         sequence = sequence.replace("J", "X")
 
-        formatted_sequence = (record[self.id_col], sequence)
-
         if self.include_id_col:
-            return record[self.id_col], formatted_sequence, torch.tensor(record[self.label_col], device=nn_utils.get_device())
+            return record[self.id_col], sequence, torch.tensor(record[self.label_col], device=nn_utils.get_device())
         else:
-            return formatted_sequence, torch.tensor(record[self.label_col], device=nn_utils.get_device())
+            return sequence, torch.tensor(record[self.label_col], device=nn_utils.get_device())
 
 
 class ProteinSequenceESM3Dataset(ProteinSequenceDatasetWithID):

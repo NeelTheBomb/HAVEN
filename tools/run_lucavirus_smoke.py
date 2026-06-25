@@ -16,6 +16,6 @@ model = LucaVirus_VirusHostPrediction(
     hugging_face_cache_dir='output/cache_dir'
 )
 print('MODEL_OK')
-emb = model.get_embedding([('id1','MKTLLILTAVVLL')])
+emb = model.get_embedding(('MKTLLILTAVVLL', 'MKTLLIL'))
 print('EMB_SHAPE', emb.shape)
 print('EMB_DTYPE', emb.dtype)

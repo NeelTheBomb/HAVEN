@@ -30,81 +30,35 @@ class LucaVirus_VirusHostPrediction(ProteinSequenceClassification):
         return tokenizer, pre_trained_model.to(nn_utils.get_device())
 
     def get_embedding(self, X):
-        # X can be one of several batch formats produced by DataLoader/collate:
-        # 1) list of (id, sequence) tuples: [(id1, seq1), (id2, seq2), ...]
-        # 2) list containing two tuples: [(id1, id2, ...), (seq1, seq2, ...)]
-        # 3) plain list of sequence strings: [seq1, seq2, ...]
+        # X is a sequence batch like ('SEQ1', 'SEQ2', ...)
         if len(X) == 0:
             return torch.empty(0, self.linear_ip.in_features, device=nn_utils.get_device())
 
-        # if isinstance(X, (tuple, list)) and len(X) == 2 and isinstance(X[0], (tuple, list)) and isinstance(X[1], (tuple, list)) and all(isinstance(item, str) for item in X[1]):
-        #     # X is a batch like (ids, sequences), where the second element is the sequence tuple/list
-        #     sequences = list(X[1])
-        # elif isinstance(X[0], (tuple, list)) and len(X[0]) == 2 and isinstance(X[0][1], str):
-        #     # X is a list of (id, sequence) pairs
-        #     sequences = [sequence for _, sequence in X]
-        # else:
-        #     # X is already a list of raw sequences
-        #     sequences = list(X)
+        sequences = list(X)
 
-        sequences = list(X[1])
         token_ids_list = []
-        attention_masks = []
+        seq_lengths = []
         for seq in sequences:
-            tokenizer_kwargs = {
-                "add_special_tokens": True,
-                "return_tensors": "pt",
-            }
-            token_encoding = self.tokenizer(seq, seq_type="prot", **tokenizer_kwargs)
-
-            token_ids_list.append(token_encoding["input_ids"].squeeze(0))
-            attention_masks.append(token_encoding["attention_mask"].squeeze(0))
+            token_encoding = self.tokenizer(seq, seq_type="prot", return_tensors="pt", add_special_tokens=True)
+            token_ids = token_encoding["input_ids"].squeeze(0)
+            token_ids_list.append(token_ids)
+            seq_lengths.append(token_ids.size(0))
 
         padding_value = self.tokenizer.pad_token_id if self.tokenizer.pad_token_id is not None else 0
         input_ids = pad_sequence(token_ids_list, batch_first=True, padding_value=padding_value).to(nn_utils.get_device())
-        attention_mask = pad_sequence(attention_masks, batch_first=True, padding_value=0).to(nn_utils.get_device())
+        attention_mask = (input_ids != padding_value).to(nn_utils.get_device())
 
+        #feeding batch of sequences with attention_mask through pre_trained model faster than feeding each sequence individually
         embedding_representation = self.pre_trained_model(input_ids, attention_mask=attention_mask)
         last_hidden_state = embedding_representation.last_hidden_state
 
-        # Exclude special tokens and padding when averaging.
-        special_mask = torch.zeros_like(input_ids, dtype=torch.bool)
-        if hasattr(self.tokenizer, "all_special_ids"):
-            for special_id in self.tokenizer.all_special_ids:
-                special_mask |= input_ids == special_id
+        sequence_embeddings = []
+        for batch_index, length in enumerate(seq_lengths):
+            #mean pooling over embeddings of amino acid tokens (excluding padding, start, and end tokens)
+            sequence_embedding = last_hidden_state[batch_index, 1: length - 1, :].mean(dim=0)
+            sequence_embeddings.append(sequence_embedding)
 
-        valid_mask = attention_mask.bool() & ~special_mask
-        valid_mask = valid_mask.float().unsqueeze(-1)
-
-        token_sum = (last_hidden_state * valid_mask).sum(dim=1)
-        token_count = valid_mask.sum(dim=1).clamp(min=1)
-        sequence_embeddings = token_sum / token_count
-        return sequence_embeddings
-
-        # sequence_embeddings = []
-        # for seq in sequences:
-        #     prot_inputs = self.tokenizer(
-        #                     seq,
-        #                     # note: protein sequence
-        #                     seq_type="prot",
-        #                     return_tensors="pt",
-        #                     add_special_tokens=True)
-
-        #     new_prot_inputs = {}
-        #     for item in prot_inputs.items():
-        #         new_prot_inputs[item[0]] = item[1].to(nn_utils.get_device())
-        #     prot_inputs = new_prot_inputs
-
-        #     with torch.no_grad():
-        #         prot_outputs = self.pre_trained_model(**prot_inputs)
-        #         # last hidden matrix as embedding matrix: [batch_size, seq_len + 2, hidden_size]
-        #         prot_last_hidden = prot_outputs.last_hidden_state
-        #         # mean pooling
-        #         mean_prot_embedding = prot_last_hidden[:, 1:-1, :].mean(dim=1)
-
-        #         sequence_embeddings.append(mean_prot_embedding.squeeze(0))
-
-        # return torch.stack(sequence_embeddings)
+        return torch.stack(sequence_embeddings)
 
     def get_model(model_params) -> ProteinSequenceClassification:
         model = LucaVirus_VirusHostPrediction(input_dim=model_params["input_dim"],
