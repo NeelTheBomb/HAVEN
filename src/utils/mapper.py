@@ -11,11 +11,13 @@ from models.haven.ablation.bert_virus_host_prediction import BERT_VirusHostPredi
 #from models.external.prostt5_host_prediction import ProstT5_VirusHostPrediction
 #from models.external.prott5_host_prediction import ProtT5_VirusHostPrediction
 from models.external.esm2_host_prediction import ESM2_VirusHostPrediction
+from models.external.lucavirus_host_prediction import LucaVirus_VirusHostPrediction
 #from models.external.esm3_host_prediction import ESM3_VirusHostPrediction
 
 from datasets.protein_sequence_custom_dataset import ProteinSequenceProstT5Dataset
 from datasets.protein_sequence_custom_dataset import ProteinSequenceProtT5Dataset
 from datasets.protein_sequence_custom_dataset import ProteinSequenceESM2Dataset
+from datasets.protein_sequence_custom_dataset import ProteinSequenceLucaVirusDataset
 
 from datasets.collations.custom_collate_function import ESM2CollateFunction
 
@@ -55,6 +57,7 @@ model_map = {
     #"ProstT5": ProstT5_VirusHostPrediction,
    # "ProtT5": ProtT5_VirusHostPrediction,  # IMP: note the difference between ProstT5 and ProtT5
     "ESM2": ESM2_VirusHostPrediction,
+    "LucaVirus": LucaVirus_VirusHostPrediction,
 #    "ESM3": ESM3_VirusHostPrediction
 }
 
@@ -62,6 +65,7 @@ dataset_map = {
     "ProstT5": ProteinSequenceProstT5Dataset,
     "ProtT5": ProteinSequenceProtT5Dataset,  # IMP: note the difference between ProstT5 and ProtT5
     "ESM2": ProteinSequenceESM2Dataset,
+    "LucaVirus": ProteinSequenceLucaVirusDataset,
 #    "ESM3": ProteinSequenceESM3Dataset
 }
 
